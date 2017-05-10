@@ -22,7 +22,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
 
         <service
-            android:name=".ServiceAccel"
+            android:name=".service.ServiceAccel"
             android:enabled="true"
             android:exported="true"></service>
     </application>
