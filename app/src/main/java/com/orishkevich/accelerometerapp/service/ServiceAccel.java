@@ -10,6 +10,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.os.Binder;
 import android.os.Handler;
 import android.os.IBinder;
 import android.app.Service;
@@ -33,7 +34,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class ServiceAccel extends Service {
-
+    public MyBinder binder = new MyBinder();
 
 
     private Gson gson = new Gson();
@@ -55,45 +56,58 @@ public class ServiceAccel extends Service {
    // private float[] valuesLinAccel = new float[3];
   //  private float[] valuesGravity = new float[3];
 
-    private static SimpleDateFormat sdf=new SimpleDateFormat("MMM MM dd, yyyy h:mm:MM a");
+    private static SimpleDateFormat sdf=new SimpleDateFormat("MMM MM dd, yyyy hh:mm:ss:SS a");
 
     private SharedPreferences sharedPrefs;
     public String myPrefs = "myPrefs";
     public static final String valuesAccelArraysList = "valuesAccelArraysList";
+    final String LOG_TAG = "myLogs";
 
     public ServiceAccel() {
     }
 
 
-    @Nullable
-    @Override
     public IBinder onBind(Intent intent) {
-        return null;
+        Log.d(LOG_TAG, "MyService onBind");
+        return new Binder();
     }
+
+    public void onRebind(Intent intent) {
+        super.onRebind(intent);
+        Log.d(LOG_TAG, "MyService onRebind");
+    }
+
+    public boolean onUnbind(Intent intent) {
+        Log.d(LOG_TAG, "MyService onUnbind");
+        return super.onUnbind(intent);
+    }
+
+
 
     @Override
     public void onCreate() {
         super.onCreate();
+
         sharedPrefs = getSharedPreferences(myPrefs, Context.MODE_PRIVATE);
-        Toast.makeText(this, "Служба создана",Toast.LENGTH_SHORT).show();
         sensorManager = (SensorManager)getSystemService(Context.SENSOR_SERVICE);
         sensorAccel = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         //sensorLinAccel = sensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
                 //sensorGravity = sensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY);
+        //clearSharedPref();
     }
 
 
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        clearSharedPref();
+        Log.d("Service", "onStartCommand");
         Toast.makeText(this, "Служба запущена",Toast.LENGTH_SHORT).show();
-        Log.d("Service", "SimpleDateFormat="+sdf.format(System.currentTimeMillis()));//"MMM MM dd, yyyy h:mm a".
-
-
+        //Log.d("Service", "SimpleDateFormat="+sdf.format(System.currentTimeMillis()));//"MMM MM dd, yyyy h:mm a".
+        //Log.d("Service", "Start: "+sdf.format(System.currentTimeMillis()));
         sensorManager.registerListener(listener, sensorAccel,SensorManager.SENSOR_DELAY_NORMAL);
         //sensorManager.registerListener(listener, sensorLinAccel,SensorManager.SENSOR_DELAY_NORMAL);
         //sensorManager.registerListener(listener, sensorGravity,SensorManager.SENSOR_DELAY_NORMAL);
-
         timer = new Timer();
         TimerTask task = new TimerTask() {
             @Override
@@ -101,8 +115,8 @@ public class ServiceAccel extends Service {
                 new Handler(Looper.getMainLooper()).post(new Runnable() {
                     public void run() {
                         valuesAccelArrays.add(new AccelModel(valuesAccel[0],valuesAccel[1],valuesAccel[2], System.currentTimeMillis()));
-                        String json = gson.toJson(new AccelModel(valuesAccel[0],valuesAccel[1],valuesAccel[2], System.currentTimeMillis()));
-                        Log.d("Service", "Json="+json);
+                       // String json = gson.toJson(new AccelModel(valuesAccel[0],valuesAccel[1],valuesAccel[2], System.currentTimeMillis()));
+                       // Log.d("Service", "Json="+json);
                         showInfo();
                     }
                 });
@@ -118,14 +132,13 @@ public class ServiceAccel extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        Log.d("Service", " onDestroy()");
         Toast.makeText(this, "Служба остановлена",Toast.LENGTH_SHORT).show();
+       // timer.cancel();
+        //Log.d("Service", "End: "+sdf.format(System.currentTimeMillis()));
         arrayAccelModel=new ArrayAccelModel(valuesAccelArrays);
-        String arrayAccelModels=new Gson().toJson(arrayAccelModel, ArrayAccelModel.class);
-        //Log.d("Service", "toJsonArrayList="+arrayAccelModels);
-        SharedPreferences.Editor editor = sharedPrefs.edit();
-        editor.putString(valuesAccelArraysList, arrayAccelModels);
-        editor.apply();
-        timer.cancel();
+        saveSharedPref(arrayAccelModel);
+
     }
 
 
@@ -175,4 +188,30 @@ public class ServiceAccel extends Service {
     String format(float values[]) {
         return String.format("%1$.1f\t\t%2$.1f\t\t%3$.1f", values[0], values[1],values[2]);
     }
+
+    public void  clearSharedPref(){
+        Log.d("Service", "clearSharedPref()");
+        sharedPrefs = getSharedPreferences(myPrefs, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPrefs.edit();
+        editor.remove(valuesAccelArraysList);
+        editor.clear();
+        editor.apply();
+    }
+
+    public void  saveSharedPref( ArrayAccelModel arrayAccelModel){
+        Log.d("Service", "saveSharedPref()");
+        String arrayAccelModels=new Gson().toJson(arrayAccelModel, ArrayAccelModel.class);
+        SharedPreferences.Editor editor = sharedPrefs.edit();
+        editor.putString(valuesAccelArraysList, arrayAccelModels);
+        editor.apply();
+    }
+
+    public class MyBinder extends Binder {
+        public ServiceAccel getService() {
+            return ServiceAccel.this;
+        }
+}
+
+
+
 }

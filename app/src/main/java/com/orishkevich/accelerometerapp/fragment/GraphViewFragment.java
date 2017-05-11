@@ -1,6 +1,7 @@
 package com.orishkevich.accelerometerapp.fragment;
 
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -32,18 +33,58 @@ public class GraphViewFragment extends Fragment {
     @Override
     public void onViewCreated(View view,Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        GraphView graphX = (GraphView)getActivity().findViewById(R.id.graphx);
-        GraphView graphY = (GraphView)getActivity().findViewById(R.id.graphy);
-        GraphView graphZ = (GraphView)getActivity().findViewById(R.id.graphz);
-        LineGraphSeries<DataPoint> series = new LineGraphSeries<DataPoint>(new DataPoint[] {
-                new DataPoint(0, 1),
-                new DataPoint(1, 5),
-                new DataPoint(2, 3),
-                new DataPoint(3, 2),
-                new DataPoint(4, 6)
+        GraphView graphX = (GraphView)getActivity().findViewById(R.id.graph);
+
+
+        LineGraphSeries<DataPoint> x = new LineGraphSeries<DataPoint>(new DataPoint[] {
+                new DataPoint(0, 2),
+                new DataPoint(1, 4),
+                new DataPoint(2, 6),
+                new DataPoint(3, 8),
+                new DataPoint(4, 10)
         });
-        graphX.addSeries(series);
-        graphY.addSeries(series);
-        graphZ.addSeries(series);
+
+        LineGraphSeries<DataPoint> y = new LineGraphSeries<DataPoint>(new DataPoint[] {
+                new DataPoint(0, 3),
+                new DataPoint(1, 6),
+                new DataPoint(2, 9),
+                new DataPoint(3, 12),
+                new DataPoint(4, 15)
+        });
+
+        LineGraphSeries<DataPoint> z = new LineGraphSeries<DataPoint>(new DataPoint[] {
+                new DataPoint(0, 1.5),
+                new DataPoint(1, 3.2),
+                new DataPoint(2, 5.7),
+                new DataPoint(3, 11),
+                new DataPoint(4, 13.6)
+        });
+
+        z.setTitle("Z");
+        z.setThickness(10);
+        z.setColor(Color.RED);
+        z.setAnimated(true);
+        z.setDrawDataPoints(true);
+        z.setDataPointsRadius(15);
+
+        x.setTitle("X");
+        x.setThickness(10);
+        x.setColor(Color.BLUE);
+        x.setAnimated(true);
+        x.setDrawDataPoints(true);
+        x.setDataPointsRadius(15);
+
+        y.setTitle("Y");
+        y.setThickness(10);
+        y.setColor(Color.GREEN);
+        y.setAnimated(true);
+        y.setDrawDataPoints(true);
+        y.setDataPointsRadius(15);
+
+
+        graphX.getViewport().setScalableY(true);
+        graphX.addSeries(z);
+        graphX.addSeries(x);
+        graphX.addSeries(y);
     }
 }

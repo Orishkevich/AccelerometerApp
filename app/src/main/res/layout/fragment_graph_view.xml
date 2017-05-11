@@ -1,22 +1,27 @@
-<LinearLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context="com.orishkevich.accelerometerapp.fragment.GraphViewFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <com.jjoe64.graphview.GraphView
-        android:layout_width="match_parent"
-        android:layout_height="200dip"
-        android:id="@+id/graphx" />
-    <com.jjoe64.graphview.GraphView
-        android:layout_width="match_parent"
-        android:layout_height="200dip"
-        android:id="@+id/graphy" />
-    <com.jjoe64.graphview.GraphView
-        android:layout_width="match_parent"
-        android:layout_height="200dip"
-        android:id="@+id/graphz" />
 
-</LinearLayout >
+    <com.jjoe64.graphview.GraphView
+        app:seriesType="line"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/graph"
+       />
+
+    <!-- <com.jjoe64.graphview.GraphView
+         android:layout_width="match_parent"
+         android:layout_height="200dip"
+         android:id="@+id/graphy" />
+     <com.jjoe64.graphview.GraphView
+         android:layout_width="match_parent"
+         android:layout_height="200dip"
+         android:id="@+id/graphz" />
+          -->
+
+ </LinearLayout >

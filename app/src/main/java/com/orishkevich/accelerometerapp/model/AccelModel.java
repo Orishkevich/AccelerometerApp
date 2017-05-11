@@ -40,7 +40,7 @@ public class AccelModel {
         this.z = z;
     }
 
-    public float getMil() {
+    public long getMil() {
         return mil;
     }
 

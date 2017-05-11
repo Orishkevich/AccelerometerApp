@@ -1,6 +1,7 @@
 package com.orishkevich.accelerometerapp.adapter;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,10 +55,17 @@ public class AccelAdapter extends RecyclerView.Adapter<AccelViewHolder> {
         return accelModels.size();
     }
 
-//фильтрация
-    public void setFilter(ArrayList<AccelModel> voc) {
+//обновление
+    public void setUpdate(ArrayList<AccelModel> voc) {
+        Log.d("Adapter", "setUpdate");
         accelModels = new ArrayList<>();
         accelModels.addAll(voc);
+        notifyDataSetChanged();
+    }
+
+    public void setCleaner() {
+        Log.d("Adapter", "setCleaner");
+        this.accelModels.clear();
         notifyDataSetChanged();
     }
 }
