@@ -124,25 +124,26 @@ public DataPoint[] creatGraphX(ArrayList<AccelModel> valuesAccelArray){
         z.setThickness(10);
         z.setColor(Color.RED);
         z.setAnimated(true);
-        z.setDrawDataPoints(true);
-        z.setDataPointsRadius(15);
+      //  z.setDrawDataPoints(true);
+      //  z.setDataPointsRadius(15);
 
         x.setTitle("X");
         x.setThickness(10);
         x.setColor(Color.BLUE);
-        x.setAnimated(true);
-        x.setDrawDataPoints(true);
-        x.setDataPointsRadius(15);
+       // x.setAnimated(true);
+       // x.setDrawDataPoints(true);
+       // x.setDataPointsRadius(15);
 
         y.setTitle("Y");
         y.setThickness(10);
         y.setColor(Color.GREEN);
         y.setAnimated(true);
-        y.setDrawDataPoints(true);
-        y.setDataPointsRadius(15);
+        //y.setDrawDataPoints(true);
+       // y.setDataPointsRadius(15);
 
+        //graphX.getScaleX();
 
-        graphX.getViewport().setScalableY(true);
+     //   graphX.getViewport().setScalableY(true);
         graphX.addSeries(z);
         graphX.addSeries(x);
         graphX.addSeries(y);
