@@ -38,11 +38,11 @@ import static android.content.Context.BIND_AUTO_CREATE;
 
 public class AccelerometerFragment extends Fragment {
 
-    private  Button btnStart;
-    private  Button btnStop;
-    private static SimpleDateFormat sdf=new SimpleDateFormat("MMM MM dd, yyyy hh:mm:ss:SS a");
-    private ArrayList<AccelModel> valuesAccelArrays=new ArrayList <AccelModel>();
-    private ArrayAccelModel arrayAccelModel=null;
+    private Button btnStart;
+    private Button btnStop;
+    private static SimpleDateFormat sdf = new SimpleDateFormat("MMM MM dd, yyyy hh:mm:ss:SS a");
+    private ArrayList<AccelModel> valuesAccelArrays = new ArrayList<AccelModel>();
+    private ArrayAccelModel arrayAccelModel = null;
     private RecyclerView rvMain;
     private AccelAdapter accelAdapter;
     private LinearLayoutManager layoutManager;
@@ -55,7 +55,7 @@ public class AccelerometerFragment extends Fragment {
 
     private final String LOG_TAG = "AccelerometerFragment";
     public final static String BROADCAST_ACTION = "com.orishkevich.accelerometerapp";
-       public final static String PARAM_JSON = "JSON";
+    public final static String PARAM_JSON = "JSON";
     private boolean bound = false;
     private ServiceConnection sConn;
     private Intent intent;
@@ -78,7 +78,7 @@ public class AccelerometerFragment extends Fragment {
         br = new BroadcastReceiver() {
             // действия при получении сообщений
             public void onReceive(Context context, Intent intent) {
-                Log.d(LOG_TAG, "onReceive:  " +intent.getStringExtra(PARAM_JSON));
+                Log.d(LOG_TAG, "onReceive:  " + intent.getStringExtra(PARAM_JSON));
                 adapterSet(downSharedPref());
             }
         };
@@ -88,26 +88,24 @@ public class AccelerometerFragment extends Fragment {
         getActivity().registerReceiver(br, intFilt);
 
 
-      /**  sConn = new ServiceConnection() {
+        /**  sConn = new ServiceConnection() {
+         public void onServiceConnected(ComponentName name, IBinder binder) {
+         Log.d(LOG_TAG, "onServiceConnected");
+         bound = true;
 
-            public void onServiceConnected(ComponentName name, IBinder binder) {
-                Log.d(LOG_TAG, "onServiceConnected");
-                bound = true;
+         }
 
-                }
+         public void onServiceDisconnected(ComponentName name) {
 
-            public void onServiceDisconnected(ComponentName name) {
+         Log.d(LOG_TAG, "onServiceDisconnected");
+         bound = false;
 
-                Log.d(LOG_TAG, "onServiceDisconnected");
-                bound = false;
-
-            }
-        };*/
-
-
+         }
+         };*/
 
 
     }
+
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_accelerometer, container, false);
@@ -117,30 +115,30 @@ public class AccelerometerFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(View view,Bundle savedInstanceState) {
+    public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         btnStart = (Button) getActivity().findViewById(R.id.button_start);
         btnStop = (Button) getActivity().findViewById(R.id.button_stop);
 
-       // adapterSet();//создание списка
+        // adapterSet();//создание списка
         btnStart.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View view) {
-                if(bound==false) {
+                if (bound == false) {
                     bound = true;
                     getActivity().startService(new Intent(getActivity(), ServiceAccel.class));
                     Log.d("AccelerometerFragment", "Start: " + sdf.format(System.currentTimeMillis()));
-                }
-                else Toast.makeText(getActivity(), "Служба уже запущенна",Toast.LENGTH_SHORT).show();
+                } else
+                    Toast.makeText(getActivity(), "Служба уже запущенна", Toast.LENGTH_SHORT).show();
             }
         });
 
         btnStop.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View view) {
-                bound=false;
-                Log.d("AccelerometerFragment", "End: "+sdf.format(System.currentTimeMillis()));
+                bound = false;
+                Log.d("AccelerometerFragment", "End: " + sdf.format(System.currentTimeMillis()));
                 getActivity().stopService(new Intent(getActivity(), ServiceAccel.class));
                 //long start=valuesAccelArrays.get(0).getMil();
                 //long end=valuesAccelArrays.get(valuesAccelArrays.size()-1).getMil();
@@ -151,34 +149,37 @@ public class AccelerometerFragment extends Fragment {
     }
 
 
-    public void adapterSet(ArrayList<AccelModel> valuesAccelArrays){
+    public void adapterSet(ArrayList<AccelModel> valuesAccelArrays) {
         //downSharedPref();
-        rvMain = (RecyclerView)getActivity().findViewById(R.id.my_recycler_view);
+        rvMain = (RecyclerView) getActivity().findViewById(R.id.my_recycler_view);
         layoutManager = new LinearLayoutManager(getActivity());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         rvMain.setLayoutManager(layoutManager);
         accelAdapter = new AccelAdapter(valuesAccelArrays);
         rvMain.setAdapter(accelAdapter);
 
-        accelAdapter.setOnItemClickListener(new AccelAdapter.OnItemClickListener(){
+        accelAdapter.setOnItemClickListener(new AccelAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(View v, int position){
+            public void onItemClick(View v, int position) {
 
             }
         });
     }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
         getActivity().unregisterReceiver(br);
         //clearSharedPref();
     }
+
     @Override
     public void onDetach() {
         super.onDetach();
         //clearSharedPref();
     }
-    public void  clearSharedPref(){
+
+    public void clearSharedPref() {
         Log.d(LOG_TAG, "clearSharedPref()");
         sharedPrefs = this.getActivity().getSharedPreferences(myPrefs, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPrefs.edit();
@@ -186,21 +187,20 @@ public class AccelerometerFragment extends Fragment {
         editor.clear();
         editor.apply();
     }
-    public ArrayList<AccelModel>  downSharedPref(){
 
-        sharedPrefs =getActivity().getSharedPreferences(myPrefs, Context.MODE_PRIVATE);
+    public ArrayList<AccelModel> downSharedPref() {
 
-        if(sharedPrefs.contains(valuesAccelArraysList)) {
+        sharedPrefs = getActivity().getSharedPreferences(myPrefs, Context.MODE_PRIVATE);
+
+        if (sharedPrefs.contains(valuesAccelArraysList)) {
             Log.d(LOG_TAG, "downSharedPref()");
             String sP = sharedPrefs.getString(valuesAccelArraysList, "");
             arrayAccelModel = new Gson().fromJson(sP, ArrayAccelModel.class);
             return valuesAccelArrays = arrayAccelModel.getAccelModel();
-        }
-        else {
+        } else {
             Log.d(LOG_TAG, "DOESNT downSharedPref()");
-            return valuesAccelArrays=new ArrayList<>();
+            return valuesAccelArrays = new ArrayList<>();
         }
-
 
 
     }

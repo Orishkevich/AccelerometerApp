@@ -1,7 +1,9 @@
 package com.orishkevich.accelerometerapp.service;
 /**
  * Из своего приложения службу можно запустить вызовом метода Context.startService(), остановить через Context.stopService().
- * Служба может остановить сама себя, вызывая методы Service.stopSelf() или Service.stopSelfResult().*/
+ * Служба может остановить сама себя, вызывая методы Service.stopSelf() или Service.stopSelfResult().
+ */
+
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -45,8 +47,8 @@ public class ServiceAccel extends Service {
     private Timer timer;
     private float[] valuesAccel = new float[3];
     private ArrayAccelModel arrayAccelModel;
-    private ArrayList <AccelModel> valuesAccelArrays=new ArrayList <AccelModel>();
-    private static SimpleDateFormat sdf=new SimpleDateFormat("MMM MM dd, yyyy hh:mm:ss:SS a");
+    private ArrayList<AccelModel> valuesAccelArrays = new ArrayList<AccelModel>();
+    private static SimpleDateFormat sdf = new SimpleDateFormat("MMM MM dd, yyyy hh:mm:ss:SS a");
     private SharedPreferences sharedPrefs;
     public String myPrefs = "myPrefs";
     public static final String valuesAccelArraysList = "valuesAccelArraysList";
@@ -72,27 +74,25 @@ public class ServiceAccel extends Service {
     }
 
 
-
     @Override
     public void onCreate() {
         super.onCreate();
 
         sharedPrefs = getSharedPreferences(myPrefs, Context.MODE_PRIVATE);
 
-        sensorManager = (SensorManager)getSystemService(Context.SENSOR_SERVICE);
+        sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         sensorAccel = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         clearSharedPref();
     }
-
 
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
         Log.d("Service", "onStartCommand");
-        Toast.makeText(this, "Служба запущена",Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Служба запущена", Toast.LENGTH_SHORT).show();
 
-        sensorManager.registerListener(listener, sensorAccel,SensorManager.SENSOR_DELAY_NORMAL);
+        sensorManager.registerListener(listener, sensorAccel, SensorManager.SENSOR_DELAY_NORMAL);
 
         timer = new Timer();
         TimerTask task = new TimerTask() {
@@ -100,9 +100,9 @@ public class ServiceAccel extends Service {
             public void run() {
                 new Handler(Looper.getMainLooper()).post(new Runnable() {
                     public void run() {
-                        valuesAccelArrays.add(new AccelModel(valuesAccel[0],valuesAccel[1],valuesAccel[2], System.currentTimeMillis()));
+                        valuesAccelArrays.add(new AccelModel(valuesAccel[0], valuesAccel[1], valuesAccel[2], System.currentTimeMillis()));
                         showInfo();
-                        Log.d(LOG_TAG, "TIME:"+System.currentTimeMillis());
+                        Log.d(LOG_TAG, "TIME:" + System.currentTimeMillis());
                     }
                 });
             }
@@ -116,22 +116,21 @@ public class ServiceAccel extends Service {
     public void onDestroy() {
         super.onDestroy();
         Log.d("Service", " onDestroy()");
-        Toast.makeText(this, "Служба остановлена",Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Служба остановлена", Toast.LENGTH_SHORT).show();
         timer.cancel();
         //Log.d("Service", "End: "+sdf.format(System.currentTimeMillis()));
-        arrayAccelModel=new ArrayAccelModel(valuesAccelArrays);
+        arrayAccelModel = new ArrayAccelModel(valuesAccelArrays);
         saveSharedPref(arrayAccelModel);
 
         //
         Intent intent = new Intent(BROADCAST_ACTION);
         Log.d(LOG_TAG, "BROADCAST_ACTION");
-            // сообщаем о старте задачи
-            intent.putExtra(PARAM_JSON, "Служба остановлена");
-            sendBroadcast(intent);
+        // сообщаем о старте задачи
+        intent.putExtra(PARAM_JSON, "Служба остановлена");
+        sendBroadcast(intent);
 
 
     }
-
 
 
     SensorEventListener listener = new SensorEventListener() {
@@ -168,14 +167,14 @@ public class ServiceAccel extends Service {
     void showInfo() {
         sb.setLength(0);
         sb.append("Accelerometer: " + format(valuesAccel));
-     //  Log.d("Sensor", ""+sb);
+        //  Log.d("Sensor", ""+sb);
     }
 
     String format(float values[]) {
-        return String.format("%1$.1f\t\t%2$.1f\t\t%3$.1f", values[0], values[1],values[2]);
+        return String.format("%1$.1f\t\t%2$.1f\t\t%3$.1f", values[0], values[1], values[2]);
     }
 
-    public void  clearSharedPref(){
+    public void clearSharedPref() {
         Log.d("Service", "clearSharedPref()");
         sharedPrefs = getSharedPreferences(myPrefs, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPrefs.edit();
@@ -184,9 +183,9 @@ public class ServiceAccel extends Service {
         editor.apply();
     }
 
-    public void  saveSharedPref( ArrayAccelModel arrayAccelModel){
+    public void saveSharedPref(ArrayAccelModel arrayAccelModel) {
         Log.d("Service", "saveSharedPref()");
-        String arrayAccelModels=new Gson().toJson(arrayAccelModel, ArrayAccelModel.class);
+        String arrayAccelModels = new Gson().toJson(arrayAccelModel, ArrayAccelModel.class);
         SharedPreferences.Editor editor = sharedPrefs.edit();
         editor.putString(valuesAccelArraysList, arrayAccelModels);
         editor.apply();
