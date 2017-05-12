@@ -1,0 +1,99 @@
+Microsoft Windows [Version 6.1.7601]
+(c) Корпорация Майкрософт (Microsoft Corp.), 2009. Все права защищены.
+
+C:\Users\Инженер-конструктор>keytool -exportcert -alias androiddebugkey -keystor
+e %USERPROFILE%/.android/debug.keystore -list -v
+"keytool" не является внутренней или внешней
+командой, исполняемой программой или пакетным файлом.
+
+C:\Users\Инженер-конструктор>debug.keystore
+"debug.keystore" не является внутренней или внешней
+командой, исполняемой программой или пакетным файлом.
+
+C:\Users\Инженер-конструктор>dir
+ Том в устройстве C не имеет метки.
+ Серийный номер тома: 42C2-11B4
+
+ Содержимое папки C:\Users\Инженер-конструктор
+
+23.04.2017  15:01    <DIR>          .
+23.04.2017  15:01    <DIR>          ..
+07.05.2017  13:57    <DIR>          .android
+01.02.2017  11:24    <DIR>          .AndroidStudio2.2
+04.03.2017  20:54    <DIR>          .AndroidStudio2.3
+08.02.2017  13:29               494 .bash_history
+21.12.2016  13:45    <DIR>          .eclipse
+01.02.2017  17:01                16 .emulator_console_auth_token
+22.07.2016  08:33    <DIR>          .EVE
+08.02.2017  20:01               204 .gitconfig
+07.02.2017  12:28    <DIR>          .gradle
+12.05.2016  10:56    <DIR>          .IdeaIC2016
+11.04.2017  12:28    <DIR>          .IntelliJIdea2017.1
+04.04.2016  08:11    <DIR>          .jssc
+21.12.2016  15:43    <DIR>          .nbi
+19.02.2016  13:45    <DIR>          .ninja_ide
+22.02.2017  18:04    <DIR>          .oracle_jre_usage
+01.02.2017  15:58    <DIR>          .p2
+12.10.2016  14:40    <DIR>          .qtiplot
+22.07.2016  08:33    <DIR>          .QtWebEngineProcess
+19.02.2016  12:24               218 .recently-used.xbel
+08.02.2017  20:01    <DIR>          .ssh
+14.03.2016  09:26    <DIR>          .thumbnails
+17.05.2016  14:16    <DIR>          .tooling
+12.05.2017  10:07    <DIR>          .VirtualBox
+13.02.2017  12:57    <DIR>          .weasis
+16.02.2016  19:01    <DIR>          Contacts
+12.05.2017  17:33    <DIR>          Desktop
+12.05.2017  09:36    <DIR>          Documents
+10.05.2017  13:28    <DIR>          Downloads
+20.01.2017  14:59    <DIR>          dwhelper
+28.12.2016  17:26    <DIR>          ECLIPS
+16.02.2016  19:01    <DIR>          Favorites
+28.04.2017  17:47    <DIR>          IdeaProjects
+14.06.2016  10:25    <DIR>          Links
+29.03.2017  11:33    <DIR>          Music
+23.04.2017  15:01               330 newreactjs.jsx
+28.04.2017  11:34    <DIR>          NootBook
+11.05.2017  11:48    <DIR>          Pictures
+14.09.2016  12:02    <DIR>          Saved Games
+16.02.2016  19:01    <DIR>          Searches
+22.02.2016  19:10                 0 Sti_Trace.log
+23.02.2017  11:58    <DIR>          Storetranslate.com
+10.03.2016  11:02    <DIR>          Tracing
+03.02.2017  16:02    <DIR>          Videos
+25.10.2016  12:35    <DIR>          VirtualBox VMs
+               6 файлов          1 262 байт
+              40 папок  20 767 879 168 байт свободно
+
+C:\Users\Инженер-конструктор>cd c:
+C:\Users\Инженер-конструктор
+
+C:\Users\Инженер-конструктор>cd c:/Program Files
+
+c:\Program Files>cd java
+
+c:\Program Files\Java>cd jdk1.8.0_121
+
+c:\Program Files\Java\jdk1.8.0_121>cd bin
+
+c:\Program Files\Java\jdk1.8.0_121\bin>keytool -exportcert -alias androiddebugke
+y -keystore %USERPROFILE%/.android/debug.keystore -list -v
+Enter keystore password:
+Alias name: androiddebugkey
+Creation date: 01.02.2017
+Entry type: PrivateKeyEntry
+Certificate chain length: 1
+Certificate[1]:
+Owner: C=US, O=Android, CN=Android Debug
+Issuer: C=US, O=Android, CN=Android Debug
+Serial number: 1
+Valid from: Wed Feb 01 14:58:27 EET 2017 until: Fri Jan 25 14:58:27 EET 2047
+Certificate fingerprints:
+         MD5:  FF:F8:50:EF:66:BB:DE:72:4D:8F:3F:8E:1E:FF:CF:BF
+         SHA1: F1:C5:BF:4F:4C:6B:8B:C9:C4:CD:E0:E9:63:2E:7F:51:43:3B:C8:5C
+         SHA256: 67:72:6A:21:CA:C8:48:34:53:4F:49:30:17:BB:3D:06:3A:91:8C:EA:92:
+50:31:76:F5:7A:B7:5B:23:3F:AE:41
+         Signature algorithm name: SHA1withRSA
+         Version: 1
+
+c:\Program Files\Java\jdk1.8.0_121\bin>
