@@ -33,52 +33,41 @@ import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import static com.orishkevich.accelerometerapp.fragment.AccelerometerFragment.BROADCAST_ACTION;
+
 public class ServiceAccel extends Service {
-    public MyBinder binder = new MyBinder();
 
 
-    private Gson gson = new Gson();
-    private TextView tvText;
+    private static final String PARAM_JSON = "JSON";
     private SensorManager sensorManager;
     private Sensor sensorAccel;
-    private Sensor sensorLinAccel;
-    private Sensor sensorGravity;
     private StringBuilder sb = new StringBuilder();
     private Timer timer;
-
     private float[] valuesAccel = new float[3];
     private ArrayAccelModel arrayAccelModel;
-
     private ArrayList <AccelModel> valuesAccelArrays=new ArrayList <AccelModel>();
-
-    //private  float[] valuesAccelMotion = new float[3];
-   // private float[] valuesAccelGravity = new float[3];
-   // private float[] valuesLinAccel = new float[3];
-  //  private float[] valuesGravity = new float[3];
-
     private static SimpleDateFormat sdf=new SimpleDateFormat("MMM MM dd, yyyy hh:mm:ss:SS a");
-
     private SharedPreferences sharedPrefs;
     public String myPrefs = "myPrefs";
     public static final String valuesAccelArraysList = "valuesAccelArraysList";
-    final String LOG_TAG = "myLogs";
+    final String LOG_TAG = "Service";
 
     public ServiceAccel() {
     }
 
 
     public IBinder onBind(Intent intent) {
-        Log.d(LOG_TAG, "MyService onBind");
+        Log.d(LOG_TAG, "onBind");
         return new Binder();
     }
 
     public void onRebind(Intent intent) {
         super.onRebind(intent);
-        Log.d(LOG_TAG, "MyService onRebind");
+        Log.d(LOG_TAG, "onRebind");
     }
 
     public boolean onUnbind(Intent intent) {
-        Log.d(LOG_TAG, "MyService onUnbind");
+        Log.d(LOG_TAG, "onUnbind");
         return super.onUnbind(intent);
     }
 
@@ -89,25 +78,22 @@ public class ServiceAccel extends Service {
         super.onCreate();
 
         sharedPrefs = getSharedPreferences(myPrefs, Context.MODE_PRIVATE);
+
         sensorManager = (SensorManager)getSystemService(Context.SENSOR_SERVICE);
         sensorAccel = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        //sensorLinAccel = sensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
-                //sensorGravity = sensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY);
-        //clearSharedPref();
+        clearSharedPref();
     }
 
 
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        clearSharedPref();
+
         Log.d("Service", "onStartCommand");
         Toast.makeText(this, "Служба запущена",Toast.LENGTH_SHORT).show();
-        //Log.d("Service", "SimpleDateFormat="+sdf.format(System.currentTimeMillis()));//"MMM MM dd, yyyy h:mm a".
-        //Log.d("Service", "Start: "+sdf.format(System.currentTimeMillis()));
+
         sensorManager.registerListener(listener, sensorAccel,SensorManager.SENSOR_DELAY_NORMAL);
-        //sensorManager.registerListener(listener, sensorLinAccel,SensorManager.SENSOR_DELAY_NORMAL);
-        //sensorManager.registerListener(listener, sensorGravity,SensorManager.SENSOR_DELAY_NORMAL);
+
         timer = new Timer();
         TimerTask task = new TimerTask() {
             @Override
@@ -115,18 +101,15 @@ public class ServiceAccel extends Service {
                 new Handler(Looper.getMainLooper()).post(new Runnable() {
                     public void run() {
                         valuesAccelArrays.add(new AccelModel(valuesAccel[0],valuesAccel[1],valuesAccel[2], System.currentTimeMillis()));
-                       // String json = gson.toJson(new AccelModel(valuesAccel[0],valuesAccel[1],valuesAccel[2], System.currentTimeMillis()));
-                       // Log.d("Service", "Json="+json);
                         showInfo();
+                        Log.d(LOG_TAG, "TIME:"+System.currentTimeMillis());
                     }
                 });
             }
         };
         timer.schedule(task, 0, 1000);
 
-
-
-        return super.onStartCommand(intent, flags, startId);
+        return START_NOT_STICKY;
     }
 
     @Override
@@ -134,12 +117,21 @@ public class ServiceAccel extends Service {
         super.onDestroy();
         Log.d("Service", " onDestroy()");
         Toast.makeText(this, "Служба остановлена",Toast.LENGTH_SHORT).show();
-       // timer.cancel();
+        timer.cancel();
         //Log.d("Service", "End: "+sdf.format(System.currentTimeMillis()));
         arrayAccelModel=new ArrayAccelModel(valuesAccelArrays);
         saveSharedPref(arrayAccelModel);
 
+        //
+        Intent intent = new Intent(BROADCAST_ACTION);
+        Log.d(LOG_TAG, "BROADCAST_ACTION");
+            // сообщаем о старте задачи
+            intent.putExtra(PARAM_JSON, "Служба остановлена");
+            sendBroadcast(intent);
+
+
     }
+
 
 
     SensorEventListener listener = new SensorEventListener() {
@@ -154,18 +146,17 @@ public class ServiceAccel extends Service {
                 case Sensor.TYPE_ACCELEROMETER:
                     for (int i = 0; i < 3; i++) {
                         valuesAccel[i] = event.values[i];
-                        //valuesAccelGravity[i] = (float) (0.1 * event.values[i] + 0.9 * valuesAccelGravity[i]);
-                       //valuesAccelMotion[i] = event.values[i]- valuesAccelGravity[i];
+
                     }
                     break;
                 case Sensor.TYPE_LINEAR_ACCELERATION:
                     for (int i = 0; i < 3; i++) {
-                        //valuesLinAccel[i] = event.values[i];
+
                     }
                     break;
                 case Sensor.TYPE_GRAVITY:
                     for (int i = 0; i < 3; i++) {
-                        //valuesGravity[i] = event.values[i];
+
                     }
                     break;
             }
@@ -176,13 +167,8 @@ public class ServiceAccel extends Service {
 
     void showInfo() {
         sb.setLength(0);
-        sb.append("Accelerometer: " + format(valuesAccel))
-               // .append("\n\nAccel motion: " + format(valuesAccelMotion))
-               // .append("\nAccel gravity : " + format(valuesAccelGravity))
-               // .append("\n\nLin accel : " + format(valuesLinAccel))
-                //.append("\nGravity : " + format(valuesGravity))
-        ;
-      //  Log.d("Sensor", ""+sb);
+        sb.append("Accelerometer: " + format(valuesAccel));
+     //  Log.d("Sensor", ""+sb);
     }
 
     String format(float values[]) {
@@ -206,12 +192,9 @@ public class ServiceAccel extends Service {
         editor.apply();
     }
 
-    public class MyBinder extends Binder {
-        public ServiceAccel getService() {
-            return ServiceAccel.this;
-        }
-}
-
-
 
 }
+
+
+
+
