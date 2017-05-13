@@ -15,23 +15,16 @@ import android.hardware.SensorManager;
 import android.os.Binder;
 import android.os.Handler;
 import android.os.IBinder;
-import android.app.Service;
-import android.content.Intent;
-import android.media.MediaPlayer;
-import android.os.IBinder;
 import android.os.Looper;
-import android.support.annotation.Nullable;
 import android.util.Log;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
-import com.orishkevich.accelerometerapp.model.AccelModel;
+import com.orishkevich.accelerometerapp.model.Session;
 import com.orishkevich.accelerometerapp.model.ArrayAccelModel;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -47,12 +40,13 @@ public class ServiceAccel extends Service {
     private Timer timer;
     private float[] valuesAccel = new float[3];
     private ArrayAccelModel arrayAccelModel;
-    private ArrayList<AccelModel> valuesAccelArrays = new ArrayList<AccelModel>();
-    private static SimpleDateFormat sdf = new SimpleDateFormat("MMM MM dd, yyyy hh:mm:ss:SS a");
+    private ArrayList<Session> valuesAccelArrays;
+    private static SimpleDateFormat sdf = new SimpleDateFormat("MMM MM dd, yyyy hh:mm:ss: a");
     private SharedPreferences sharedPrefs;
     public String myPrefs = "myPrefs";
     public static final String valuesAccelArraysList = "valuesAccelArraysList";
     final String LOG_TAG = "Service";
+    private int time;
 
     public ServiceAccel() {
     }
@@ -79,35 +73,34 @@ public class ServiceAccel extends Service {
         super.onCreate();
 
         sharedPrefs = getSharedPreferences(myPrefs, Context.MODE_PRIVATE);
-
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         sensorAccel = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+
         clearSharedPref();
     }
 
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-
+        time=1000;//задать время
         Log.d("Service", "onStartCommand");
         Toast.makeText(this, "Служба запущена", Toast.LENGTH_SHORT).show();
-
+        valuesAccelArrays=new ArrayList<Session>();
         sensorManager.registerListener(listener, sensorAccel, SensorManager.SENSOR_DELAY_NORMAL);
-
         timer = new Timer();
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
                 new Handler(Looper.getMainLooper()).post(new Runnable() {
                     public void run() {
-                        valuesAccelArrays.add(new AccelModel(valuesAccel[0], valuesAccel[1], valuesAccel[2], System.currentTimeMillis()));
+                        valuesAccelArrays.add(new Session(valuesAccel[0], valuesAccel[1], valuesAccel[2], System.currentTimeMillis()));
                         showInfo();
                         Log.d(LOG_TAG, "TIME:" + System.currentTimeMillis());
                     }
                 });
             }
         };
-        timer.schedule(task, 0, 1000);
+        timer.schedule(task, 0, time);
 
         return START_NOT_STICKY;
     }
@@ -119,7 +112,10 @@ public class ServiceAccel extends Service {
         Toast.makeText(this, "Служба остановлена", Toast.LENGTH_SHORT).show();
         timer.cancel();
         //Log.d("Service", "End: "+sdf.format(System.currentTimeMillis()));
-        arrayAccelModel = new ArrayAccelModel(valuesAccelArrays);
+        arrayAccelModel = new ArrayAccelModel();
+        arrayAccelModel.setArray(valuesAccelArrays);
+        arrayAccelModel.setUser("Stas");
+        arrayAccelModel.setSession(sdf.format(valuesAccelArrays.get(0).getMil()));
         saveSharedPref(arrayAccelModel);
 
         //

@@ -1,8 +1,6 @@
 package com.orishkevich.accelerometerapp.model;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Инженер-конструктор on 10.05.2017.
@@ -10,19 +8,51 @@ import java.util.List;
 
 public class ArrayAccelModel {
 
-    private ArrayList<AccelModel> acMod;
+    private String user;
+    private String session;
+    private ArrayList<Session> userSession;
 
-    public ArrayList<AccelModel> getAccelModel() {
-        return acMod;
+    public ArrayAccelModel(String user, String session, ArrayList<Session> userSession) {
+        this.user = user;
+        this.session = session;
+        this.userSession = userSession;
     }
 
-    public void setWords(ArrayList<AccelModel> acMod) {
-        this.acMod = acMod;
+
+
+    public ArrayAccelModel() {
+
     }
 
-    public ArrayAccelModel(ArrayList<AccelModel> acMod) {
-        this.acMod = acMod;
+
+
+    public String getUser() {
+        return user;
     }
+
+    public void setUser(String user) {
+        this.user = user;
+    }
+
+    public String getSession() {
+        return session;
+    }
+
+    public void setSession(String session) {
+        this.session = session;
+    }
+
+
+
+    public ArrayList<Session> getUserSession() {
+        return userSession;
+    }
+
+    public void setArray(ArrayList<Session> userSession) {
+        this.userSession = userSession;
+    }
+
+
 
 
 

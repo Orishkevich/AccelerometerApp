@@ -31,7 +31,6 @@ public class AuthorizationActivity extends AppCompatActivity implements
     private FirebaseAuth mFirebaseAuth;
     private GoogleApiClient mGoogleApiClient;
 
-    // Firebase instance variables
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +47,7 @@ public class AuthorizationActivity extends AppCompatActivity implements
                 .requestEmail()
                 .build();
         mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
+                .enableAutoManage(this , this )
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
 
@@ -77,8 +76,11 @@ public class AuthorizationActivity extends AppCompatActivity implements
             if (result.isSuccess()) {
                 GoogleSignInAccount account = result.getSignInAccount();
                 firebaseAuthWithGoogle(account);
+                Toast.makeText(AuthorizationActivity.this, "Authentication  successful.",
+                        Toast.LENGTH_SHORT).show();
             } else {
-                // Google Sign In failed
+                Toast.makeText(AuthorizationActivity.this, "Google Sign In failed.",
+                        Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -89,14 +91,12 @@ public class AuthorizationActivity extends AppCompatActivity implements
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        // If sign in fails, display a message to the user. If sign in succeeds
-                        // the auth state listener will be notified and logic to handle the
-                        // signed in user can be handled in the listener.
+
                         if (!task.isSuccessful()) {
                             Toast.makeText(AuthorizationActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
                         } else {
-                            startActivity(new Intent(AuthorizationActivity.this, Main.class));
+                            startActivity(new Intent(AuthorizationActivity.this, MainActivity.class));
                             finish();
                         }
                     }

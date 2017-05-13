@@ -2,7 +2,6 @@ package com.orishkevich.accelerometerapp.fragment;
 
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -19,9 +18,8 @@ import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 import com.orishkevich.accelerometerapp.R;
-import com.orishkevich.accelerometerapp.model.AccelModel;
+import com.orishkevich.accelerometerapp.model.Session;
 import com.orishkevich.accelerometerapp.model.ArrayAccelModel;
-import com.orishkevich.accelerometerapp.service.ServiceAccel;
 
 import java.util.ArrayList;
 
@@ -32,7 +30,7 @@ public class GraphViewFragment extends Fragment {
     private String myPrefs = "myPrefs";
     private static final String valuesAccelArraysList = "valuesAccelArraysList";
     private final String LOG_TAG = "GraphViewFragment";
-    private ArrayList<AccelModel> valuesAccelArrays = new ArrayList<AccelModel>();
+    private ArrayList<Session> valuesAccelArrays = new ArrayList<Session>();
     private ArrayAccelModel arrayAccelModel = null;
     GraphView graphX;
 
@@ -70,7 +68,7 @@ public class GraphViewFragment extends Fragment {
         });
     }
 
-    public ArrayList<AccelModel> downSharedPref() {
+    public ArrayList<Session> downSharedPref() {
 
         sharedPrefs = getActivity().getSharedPreferences(myPrefs, Context.MODE_PRIVATE);
 
@@ -78,14 +76,14 @@ public class GraphViewFragment extends Fragment {
             Log.d(LOG_TAG, "downSharedPref()");
             String sP = sharedPrefs.getString(valuesAccelArraysList, "");
             arrayAccelModel = new Gson().fromJson(sP, ArrayAccelModel.class);
-            return valuesAccelArrays = arrayAccelModel.getAccelModel();
+            return valuesAccelArrays = arrayAccelModel.getUserSession();
         } else {
             Log.d(LOG_TAG, "DOESNT downSharedPref()");
             return valuesAccelArrays = new ArrayList<>();
         }
 }
 
-public DataPoint[] creatGraphX(ArrayList<AccelModel> valuesAccelArray){
+public DataPoint[] creatGraphX(ArrayList<Session> valuesAccelArray){
     int sizeArr=valuesAccelArray.size();
      DataPoint[] dp=new DataPoint[sizeArr];
     for (int x = 0; x < sizeArr; x++) {
@@ -94,7 +92,7 @@ public DataPoint[] creatGraphX(ArrayList<AccelModel> valuesAccelArray){
     }
     return dp;
 }
-    public DataPoint[] creatGraphY(ArrayList<AccelModel> valuesAccelArray){
+    public DataPoint[] creatGraphY(ArrayList<Session> valuesAccelArray){
         int sizeArr=valuesAccelArray.size();
         DataPoint[] dp=new DataPoint[sizeArr];
         for (int y = 0; y < sizeArr; y++) {
@@ -103,7 +101,7 @@ public DataPoint[] creatGraphX(ArrayList<AccelModel> valuesAccelArray){
         }
         return dp;
     }
-    public DataPoint[] creatGraphZ(ArrayList<AccelModel> valuesAccelArray){
+    public DataPoint[] creatGraphZ(ArrayList<Session> valuesAccelArray){
         int sizeArr=valuesAccelArray.size();
         DataPoint[] dp=new DataPoint[sizeArr];
         for (int z = 0; z < sizeArr; z++) {

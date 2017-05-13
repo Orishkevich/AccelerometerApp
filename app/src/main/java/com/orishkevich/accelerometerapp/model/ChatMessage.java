@@ -1,4 +1,4 @@
-package com.orishkevich.accelerometerapp;
+package com.orishkevich.accelerometerapp.model;
 
 
 public class ChatMessage {

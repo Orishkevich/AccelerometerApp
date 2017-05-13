@@ -2,14 +2,14 @@ package com.orishkevich.accelerometerapp.model;
 
 
 
-public class AccelModel {
+public class Session {
 
     private float x;
     private float y;
     private float z;
     private long mil;
 
-    public AccelModel(float x, float y, float z, long mil) {
+    public Session(float x, float y, float z, long mil) {
         this.x = x;
         this.y = y;
         this.z = z;

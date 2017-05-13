@@ -2,16 +2,13 @@ package com.orishkevich.accelerometerapp.fragment;
 
 
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.IBinder;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -19,21 +16,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.gson.Gson;
 import com.orishkevich.accelerometerapp.R;
 import com.orishkevich.accelerometerapp.adapter.AccelAdapter;
-import com.orishkevich.accelerometerapp.model.AccelModel;
+import com.orishkevich.accelerometerapp.model.Session;
 import com.orishkevich.accelerometerapp.model.ArrayAccelModel;
 import com.orishkevich.accelerometerapp.service.ServiceAccel;
 
-import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-
-import static android.content.Context.BIND_AUTO_CREATE;
 
 
 public class AccelerometerFragment extends Fragment {
@@ -41,17 +36,17 @@ public class AccelerometerFragment extends Fragment {
     private Button btnStart;
     private Button btnStop;
     private static SimpleDateFormat sdf = new SimpleDateFormat("MMM MM dd, yyyy hh:mm:ss:SS a");
-    private ArrayList<AccelModel> valuesAccelArrays = new ArrayList<AccelModel>();
-    private ArrayAccelModel arrayAccelModel = null;
+    private ArrayList<Session> valuesAccelArrays = new ArrayList<Session>();
+    private ArrayAccelModel arrayAccelModel;
     private RecyclerView rvMain;
     private AccelAdapter accelAdapter;
     private LinearLayoutManager layoutManager;
-
+    private Button mSendButton;
 
     private SharedPreferences sharedPrefs;
     private String myPrefs = "myPrefs";
     private static final String valuesAccelArraysList = "valuesAccelArraysList";
-
+    private String sP;
 
     private final String LOG_TAG = "AccelerometerFragment";
     public final static String BROADCAST_ACTION = "com.orishkevich.accelerometerapp";
@@ -62,6 +57,9 @@ public class AccelerometerFragment extends Fragment {
     private ServiceAccel myService;
     private BroadcastReceiver br;
 
+    private DatabaseReference mSimpleFirechatDatabaseReference;
+
+    // private FirebaseRecyclerAdapter<FriendlyMessage, MessageViewHolder> mFirebaseAdapter;
     public AccelerometerFragment() {
 
     }
@@ -69,7 +67,9 @@ public class AccelerometerFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        mSimpleFirechatDatabaseReference = FirebaseDatabase.getInstance().getReference();
+        // DatabaseReference myRef = mSimpleFirechatDatabaseReference.getReference();
+        // myRef.setValue("Hello, World!");
         sharedPrefs = this.getActivity().getSharedPreferences(myPrefs, Context.MODE_PRIVATE);
      /*   if(sharedPrefs.contains(valuesAccelArraysList)) valuesAccelArrays=downSharedPref();
         else valuesAccelArrays=new ArrayList<>();*/
@@ -146,10 +146,22 @@ public class AccelerometerFragment extends Fragment {
             }
 
         });
+
+
+        mSendButton = (Button) getActivity().findViewById(R.id.sendButton);
+        mSendButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+
+                Toast.makeText(getActivity(), "Данные отправленны", Toast.LENGTH_SHORT).show();
+                mSimpleFirechatDatabaseReference.child("Sesions").push().setValue(arrayAccelModel);
+            }
+        });
     }
 
 
-    public void adapterSet(ArrayList<AccelModel> valuesAccelArrays) {
+    public void adapterSet(ArrayList<Session> valuesAccelArrays) {
         //downSharedPref();
         rvMain = (RecyclerView) getActivity().findViewById(R.id.my_recycler_view);
         layoutManager = new LinearLayoutManager(getActivity());
@@ -188,15 +200,16 @@ public class AccelerometerFragment extends Fragment {
         editor.apply();
     }
 
-    public ArrayList<AccelModel> downSharedPref() {
+    public ArrayList<Session> downSharedPref() {
 
         sharedPrefs = getActivity().getSharedPreferences(myPrefs, Context.MODE_PRIVATE);
 
         if (sharedPrefs.contains(valuesAccelArraysList)) {
-            Log.d(LOG_TAG, "downSharedPref()");
-            String sP = sharedPrefs.getString(valuesAccelArraysList, "");
+
+            sP = sharedPrefs.getString(valuesAccelArraysList, "");
+            Log.d(LOG_TAG, "downSharedPref()=" + sP);
             arrayAccelModel = new Gson().fromJson(sP, ArrayAccelModel.class);
-            return valuesAccelArrays = arrayAccelModel.getAccelModel();
+            return valuesAccelArrays = arrayAccelModel.getUserSession();
         } else {
             Log.d(LOG_TAG, "DOESNT downSharedPref()");
             return valuesAccelArrays = new ArrayList<>();

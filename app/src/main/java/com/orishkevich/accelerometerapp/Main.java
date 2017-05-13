@@ -1,14 +1,12 @@
 package com.orishkevich.accelerometerapp;
 
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
-import android.text.InputFilter;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
@@ -23,6 +21,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import com.bumptech.glide.Glide;
+import com.orishkevich.accelerometerapp.model.ChatMessage;
 
 public class Main extends AppCompatActivity {
 
@@ -35,6 +34,7 @@ public class Main extends AppCompatActivity {
 
     private Button mSendButton;
     private EditText mMsgEditText;
+
     private SharedPreferences mSharedPreferences;
     public static final String DEFAULT_NAME = "aleksander";
     private String mUsername;
@@ -142,7 +142,7 @@ public class Main extends AppCompatActivity {
             }
         });
 
-        mSendButton = (Button) findViewById(R.id.sendButton);
+        mSendButton = (Button) findViewById(R.id.sendButtonmain);
         mSendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 
 
 import com.orishkevich.accelerometerapp.R;
-import com.orishkevich.accelerometerapp.model.AccelModel;
+import com.orishkevich.accelerometerapp.model.Session;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -20,7 +20,7 @@ import java.util.ArrayList;
 public class AccelAdapter extends RecyclerView.Adapter<AccelViewHolder> {
 
     public static OnItemClickListener listener;
-        private ArrayList<AccelModel> accelModels;
+        private ArrayList<Session> sessions;
     private static SimpleDateFormat sdf = new SimpleDateFormat("MMM MM dd, yyyy hh:mm:ss:SS a");
 
     public interface OnItemClickListener{
@@ -31,15 +31,15 @@ public class AccelAdapter extends RecyclerView.Adapter<AccelViewHolder> {
         this.listener = listener;
     }
 
-    public AccelAdapter(ArrayList<AccelModel> accelModels){
-        this.accelModels = accelModels;
+    public AccelAdapter(ArrayList<Session> sessions){
+        this.sessions = sessions;
     }
 
 
     @Override
     public void onBindViewHolder(AccelViewHolder personViewHolder, int i){
 
-        AccelModel current = accelModels.get(i);
+        Session current = sessions.get(i);
                 personViewHolder.tvName.setText(String.valueOf(sdf.format(current.getMil())
                         +"\n"+"Accelerometer:"
                         +"\n"+"X:"+current.getX()
@@ -57,20 +57,20 @@ public class AccelAdapter extends RecyclerView.Adapter<AccelViewHolder> {
 
     @Override
     public int getItemCount(){
-        return accelModels.size();
+        return sessions.size();
     }
 
 //обновление
-    public void setUpdate(ArrayList<AccelModel> voc) {
+    public void setUpdate(ArrayList<Session> voc) {
         Log.d("Adapter", "setUpdate");
-        accelModels = new ArrayList<>();
-        accelModels.addAll(voc);
+        sessions = new ArrayList<>();
+        sessions.addAll(voc);
         notifyDataSetChanged();
     }
 
     public void setCleaner() {
         Log.d("Adapter", "setCleaner");
-        this.accelModels.clear();
+        this.sessions.clear();
         notifyDataSetChanged();
     }
 }
