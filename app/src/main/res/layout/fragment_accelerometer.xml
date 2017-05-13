@@ -2,41 +2,38 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.orishkevich.accelerometerapp.fragment.AccelerometerFragment">
+    tools:context="com.orishkevich.accelerometerapp.fragment.AccelerometerFragment"
+    android:background="@color/blue_light">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:id="@+id/tvText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge">
-    </TextView>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/my_recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/button_start"
-        android:layout_below="@+id/sendButton" />
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/tvText"
+        android:layout_toEndOf="@+id/tvText"
+        android:layout_below="@+id/button_start" />
 
     <Button
         android:id="@+id/button_start"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/button_stop"
-        android:layout_toEndOf="@+id/tvText"
+        android:background="@color/blue"
+        android:text="@string/start"
+        android:layout_alignParentTop="true"
         android:layout_toRightOf="@+id/tvText"
-        android:text="@string/start" />
+        android:layout_toEndOf="@+id/tvText" />
 
     <Button
         android:id="@+id/button_stop"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="17dp"
-        android:text="@string/stop" />
+        android:background="@color/blue"
+        android:text="@string/stop"
+        android:layout_below="@+id/sendButton"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
     <Button
         android:id="@+id/sendButton"
@@ -45,7 +42,48 @@
         android:layout_above="@+id/button_start"
         android:layout_centerHorizontal="true"
         android:text="@string/send"
-        android:visibility="gone" />
+        android:visibility="gone"
+        android:background="@color/blue"/>
+
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/blue"
+        android:entries="@array/times_list"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/textView2"
+        android:layout_toEndOf="@+id/textView2"
+        android:layout_marginLeft="19dp"
+        android:layout_marginStart="19dp" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/per"
+        android:layout_below="@+id/textView2"
+        android:layout_toRightOf="@+id/button_start"
+        android:layout_toEndOf="@+id/button_start" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/spinner"
+        android:layout_toEndOf="@+id/button_start"
+        android:layout_toRightOf="@+id/button_start"
+        android:text="@string/time" />
+
+    <Chronometer
+        android:id="@+id/chronometer2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/spinner"
+        android:layout_alignStart="@+id/spinner"
+        android:layout_below="@+id/spinner"
+        android:layout_alignRight="@+id/spinner"
+        android:layout_alignEnd="@+id/spinner" />
 
 
 </RelativeLayout>

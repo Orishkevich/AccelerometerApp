@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
@@ -43,12 +44,12 @@ public class AccelerometerFragment extends Fragment {
     private AccelAdapter accelAdapter;
     private LinearLayoutManager layoutManager;
     private Button mSendButton;
-
+    private Spinner spinner;
     private SharedPreferences sharedPrefs;
     private String myPrefs = "myPrefs";
     private static final String valuesAccelArraysList = "valuesAccelArraysList";
     private String sP;
-
+    private int time;
     private final String LOG_TAG = "AccelerometerFragment";
     public final static String BROADCAST_ACTION = "com.orishkevich.accelerometerapp";
     public final static String PARAM_JSON = "JSON";
@@ -127,6 +128,7 @@ public class AccelerometerFragment extends Fragment {
 
         btnStart = (Button) getActivity().findViewById(R.id.button_start);
         btnStop = (Button) getActivity().findViewById(R.id.button_stop);
+        spinner = (Spinner)getActivity().findViewById(R.id.spinner);
 
         // adapterSet();//создание списка
         btnStart.setOnClickListener(new View.OnClickListener() {
@@ -134,7 +136,8 @@ public class AccelerometerFragment extends Fragment {
             public void onClick(View view) {
                 if (bound == false) {
                     bound = true;
-                    getActivity().startService(new Intent(getActivity(), ServiceAccel.class));
+                    time = Integer.parseInt(spinner.getSelectedItem().toString());
+                    getActivity().startService(new Intent(getActivity(), ServiceAccel.class).putExtra("time", time*1000));
                     Log.d("AccelerometerFragment", "Start: " + sdf.format(System.currentTimeMillis()));
                 } else
                     Toast.makeText(getActivity(), "Служба уже запущенна", Toast.LENGTH_SHORT).show();

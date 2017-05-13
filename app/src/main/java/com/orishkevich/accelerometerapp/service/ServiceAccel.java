@@ -1,7 +1,6 @@
 package com.orishkevich.accelerometerapp.service;
 /**
- * Из своего приложения службу можно запустить вызовом метода Context.startService(), остановить через Context.stopService().
- * Служба может остановить сама себя, вызывая методы Service.stopSelf() или Service.stopSelfResult().
+
  */
 
 import android.app.Service;
@@ -78,20 +77,22 @@ public class ServiceAccel extends Service {
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         sensorAccel = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 
-        //vb     clearSharedPref();
+        //clearSharedPref();
     }
 
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+      time = intent.getIntExtra("time",1000);
 
+        Log.d("Service", "onStartCommand"+"Times="+time);
         if (sharedPrefs.contains(userName)) {
             arrayAccelModel.setUser(sharedPrefs.getString(userName, ""));
 
         } else {
             arrayAccelModel.setUser("Anonymous");
                  }
-        time=1000;//задать время
+       // time=1000;//задать время
         Log.d("Service", "onStartCommand");
         Toast.makeText(this, "Служба запущена", Toast.LENGTH_SHORT).show();
         valuesAccelArrays=new ArrayList<Session>();
