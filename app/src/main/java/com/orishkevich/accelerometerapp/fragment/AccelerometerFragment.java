@@ -154,8 +154,10 @@ public class AccelerometerFragment extends Fragment {
             public void onClick(View view) {
 
 
+
+
                 Toast.makeText(getActivity(), "Данные отправленны", Toast.LENGTH_SHORT).show();
-                mSimpleFirechatDatabaseReference.child("Sesions").push().setValue(arrayAccelModel);
+                mSimpleFirechatDatabaseReference.child(arrayAccelModel.getUser()).child("Sesion").push().setValue(arrayAccelModel);
             }
         });
     }

@@ -14,7 +14,10 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.jjoe64.graphview.DefaultLabelFormatter;
 import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.LegendRenderer;
+import com.jjoe64.graphview.helper.StaticLabelsFormatter;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 import com.orishkevich.accelerometerapp.R;
@@ -32,7 +35,7 @@ public class GraphViewFragment extends Fragment {
     private final String LOG_TAG = "GraphViewFragment";
     private ArrayList<Session> valuesAccelArrays = new ArrayList<Session>();
     private ArrayAccelModel arrayAccelModel = null;
-    GraphView graphX;
+    private GraphView graphX;
 
     public GraphViewFragment() {
 
@@ -57,8 +60,8 @@ public class GraphViewFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         //createdGraphs();
         graphX = (GraphView)getActivity().findViewById(R.id.graph);
-
-        btnRefresh = (Button) getActivity().findViewById(R.id.button_refresh);
+        graphX.clearSecondScale();
+                btnRefresh = (Button) getActivity().findViewById(R.id.button_refresh);
         btnRefresh.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View view) {
@@ -126,6 +129,7 @@ public DataPoint[] creatGraphX(ArrayList<Session> valuesAccelArray){
       //  z.setDataPointsRadius(15);
 
         x.setTitle("X");
+
         x.setThickness(10);
         x.setColor(Color.BLUE);
        // x.setAnimated(true);
@@ -142,6 +146,21 @@ public DataPoint[] creatGraphX(ArrayList<Session> valuesAccelArray){
         //graphX.getScaleX();
 
      //   graphX.getViewport().setScalableY(true);
+
+        graphX.getGridLabelRenderer().setLabelFormatter(new DefaultLabelFormatter() {
+            @Override
+            public String formatLabel(double value, boolean isValueX) {
+                if (isValueX) {
+
+                    return super.formatLabel(value, isValueX)+ " s";
+                } else {
+
+                    return super.formatLabel(value, isValueX) ;
+                }
+            }
+        });
+        graphX.getLegendRenderer().setVisible(true);
+        graphX.getLegendRenderer().setAlign(LegendRenderer.LegendAlign.TOP);
         graphX.addSeries(z);
         graphX.addSeries(x);
         graphX.addSeries(y);

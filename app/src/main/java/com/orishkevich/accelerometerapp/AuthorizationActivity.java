@@ -25,7 +25,7 @@ import com.google.firebase.auth.GoogleAuthProvider;
 
 public class AuthorizationActivity extends AppCompatActivity implements
         GoogleApiClient.OnConnectionFailedListener, View.OnClickListener {
-
+    private final String LOG_TAG = "AuthorizationActivity";
     private static final int RC_SIGN_IN = 9001;
     private SignInButton mAuthButton;
     private FirebaseAuth mFirebaseAuth;
@@ -75,7 +75,9 @@ public class AuthorizationActivity extends AppCompatActivity implements
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             if (result.isSuccess()) {
                 GoogleSignInAccount account = result.getSignInAccount();
+                Log.d(LOG_TAG,"Name: "+account.getDisplayName());
                 firebaseAuthWithGoogle(account);
+                account.getDisplayName();
                 Toast.makeText(AuthorizationActivity.this, "Authentication  successful.",
                         Toast.LENGTH_SHORT).show();
             } else {
