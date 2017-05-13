@@ -39,7 +39,7 @@ public class ServiceAccel extends Service {
     private StringBuilder sb = new StringBuilder();
     private Timer timer;
     private float[] valuesAccel = new float[3];
-    private ArrayAccelModel arrayAccelModel;
+    private ArrayAccelModel arrayAccelModel= new ArrayAccelModel();;
     private ArrayList<Session> valuesAccelArrays;
     private static SimpleDateFormat sdf = new SimpleDateFormat("MMM MM dd, yyyy hh:mm:ss: a");
     private SharedPreferences sharedPrefs;
@@ -47,6 +47,7 @@ public class ServiceAccel extends Service {
     public static final String valuesAccelArraysList = "valuesAccelArraysList";
     final String LOG_TAG = "Service";
     private int time;
+    public static final String userName= "userName";
 
     public ServiceAccel() {
     }
@@ -73,15 +74,23 @@ public class ServiceAccel extends Service {
         super.onCreate();
 
         sharedPrefs = getSharedPreferences(myPrefs, Context.MODE_PRIVATE);
+
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         sensorAccel = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 
-        clearSharedPref();
+        //vb     clearSharedPref();
     }
 
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+
+        if (sharedPrefs.contains(userName)) {
+            arrayAccelModel.setUser(sharedPrefs.getString(userName, ""));
+
+        } else {
+            arrayAccelModel.setUser("Anonymous");
+                 }
         time=1000;//задать время
         Log.d("Service", "onStartCommand");
         Toast.makeText(this, "Служба запущена", Toast.LENGTH_SHORT).show();
@@ -112,10 +121,9 @@ public class ServiceAccel extends Service {
         Log.d("Service", " onDestroy()");
         Toast.makeText(this, "Служба остановлена", Toast.LENGTH_SHORT).show();
         timer.cancel();
-        //Log.d("Service", "End: "+sdf.format(System.currentTimeMillis()));
-        arrayAccelModel = new ArrayAccelModel();
+
+
         arrayAccelModel.setArray(valuesAccelArrays);
-        arrayAccelModel.setUser("Stas");
         arrayAccelModel.setSession(sdf.format(valuesAccelArrays.get(0).getMil()));
         saveSharedPref(arrayAccelModel);
 

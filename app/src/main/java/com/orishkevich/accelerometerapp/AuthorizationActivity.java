@@ -1,6 +1,8 @@
 package com.orishkevich.accelerometerapp;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -22,6 +24,8 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.gson.Gson;
+import com.orishkevich.accelerometerapp.model.ArrayAccelModel;
 
 public class AuthorizationActivity extends AppCompatActivity implements
         GoogleApiClient.OnConnectionFailedListener, View.OnClickListener {
@@ -32,10 +36,17 @@ public class AuthorizationActivity extends AppCompatActivity implements
     private GoogleApiClient mGoogleApiClient;
 
 
+    private SharedPreferences sharedPrefs;
+    public String myPrefs = "myPrefs";
+    public static final String userName= "userName";
+    private String nameUser;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_auth);
+        sharedPrefs = getSharedPreferences(myPrefs, Context.MODE_PRIVATE);
 
         mAuthButton = (SignInButton) findViewById(R.id.auth_button);
         mAuthButton.setOnClickListener(this);
@@ -76,10 +87,13 @@ public class AuthorizationActivity extends AppCompatActivity implements
             if (result.isSuccess()) {
                 GoogleSignInAccount account = result.getSignInAccount();
                 Log.d(LOG_TAG,"Name: "+account.getDisplayName());
+                nameUser=account.getDisplayName();
+                 saveSharedPref(nameUser);
                 firebaseAuthWithGoogle(account);
                 account.getDisplayName();
                 Toast.makeText(AuthorizationActivity.this, "Authentication  successful.",
                         Toast.LENGTH_SHORT).show();
+
             } else {
                 Toast.makeText(AuthorizationActivity.this, "Google Sign In failed.",
                         Toast.LENGTH_SHORT).show();
@@ -98,6 +112,7 @@ public class AuthorizationActivity extends AppCompatActivity implements
                             Toast.makeText(AuthorizationActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
                         } else {
+
                             startActivity(new Intent(AuthorizationActivity.this, MainActivity.class));
                             finish();
                         }
@@ -108,5 +123,11 @@ public class AuthorizationActivity extends AppCompatActivity implements
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         Toast.makeText(this, "Google Play Services error.", Toast.LENGTH_SHORT).show();
+    }
+    public void saveSharedPref(String name) {
+        Log.d(LOG_TAG,"Name: "+name);
+        SharedPreferences.Editor editor = sharedPrefs.edit();
+        editor.putString(userName, name);
+        editor.apply();
     }
 }
