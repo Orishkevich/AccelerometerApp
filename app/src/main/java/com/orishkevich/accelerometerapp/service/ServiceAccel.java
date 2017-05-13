@@ -26,6 +26,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
+ import java.util.Date;
 
 import static com.orishkevich.accelerometerapp.fragment.AccelerometerFragment.BROADCAST_ACTION;
 
@@ -46,6 +47,8 @@ public class ServiceAccel extends Service {
     public static final String valuesAccelArraysList = "valuesAccelArraysList";
     final String LOG_TAG = "Service";
     private int time;
+    private int  period;
+    private Date date;
     public static final String userName= "userName";
 
     public ServiceAccel() {
@@ -83,9 +86,9 @@ public class ServiceAccel extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-      time = intent.getIntExtra("time",1000);
+        time = intent.getIntExtra("time",1000);
+        period=intent.getIntExtra("period",1000);
 
-        Log.d("Service", "onStartCommand"+"Times="+time);
         if (sharedPrefs.contains(userName)) {
             arrayAccelModel.setUser(sharedPrefs.getString(userName, ""));
 
@@ -93,11 +96,14 @@ public class ServiceAccel extends Service {
             arrayAccelModel.setUser("Anonymous");
                  }
        // time=1000;//задать время
-        Log.d("Service", "onStartCommand");
+
         Toast.makeText(this, "Служба запущена", Toast.LENGTH_SHORT).show();
         valuesAccelArrays=new ArrayList<Session>();
         sensorManager.registerListener(listener, sensorAccel, SensorManager.SENSOR_DELAY_NORMAL);
         timer = new Timer();
+        date=new Date(System.currentTimeMillis()+period);
+        timerSet(date);
+
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
@@ -111,8 +117,8 @@ public class ServiceAccel extends Service {
                 });
             }
         };
-        timer.schedule(task, 0, time);
-
+       // timer.schedule(task, 0, time);
+        timer.scheduleAtFixedRate(task, period, time);
         return START_NOT_STICKY;
     }
 
@@ -196,8 +202,22 @@ public class ServiceAccel extends Service {
         editor.putString(valuesAccelArraysList, arrayAccelModels);
         editor.apply();
     }
-
-
+public void timerSet(Date date){
+    Log.d(LOG_TAG, " timerSet, date="+date);
+    Timer tim = new Timer();
+    TimerTask t = new TimerTask() {
+        @Override
+        public void run() {
+            new Handler(Looper.getMainLooper()).post(new Runnable() {
+                public void run() {
+                    timer.cancel();
+                }
+            });
+        }
+    };
+    // timer.schedule(task, 0, time);
+        tim.schedule(t, date);
+}
 }
 
 

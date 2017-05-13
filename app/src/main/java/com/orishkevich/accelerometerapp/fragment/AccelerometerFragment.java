@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -58,6 +59,8 @@ public class AccelerometerFragment extends Fragment {
     private Intent intent;
     private ServiceAccel myService;
     private BroadcastReceiver br;
+    private EditText editTextTimes;
+    private int period;
 
     private DatabaseReference mSimpleFirechatDatabaseReference;
 
@@ -129,7 +132,7 @@ public class AccelerometerFragment extends Fragment {
         btnStart = (Button) getActivity().findViewById(R.id.button_start);
         btnStop = (Button) getActivity().findViewById(R.id.button_stop);
         spinner = (Spinner)getActivity().findViewById(R.id.spinner);
-
+        editTextTimes = (EditText)getActivity().findViewById(R.id.times);
         // adapterSet();//создание списка
         btnStart.setOnClickListener(new View.OnClickListener() {
 
@@ -137,7 +140,12 @@ public class AccelerometerFragment extends Fragment {
                 if (bound == false) {
                     bound = true;
                     time = Integer.parseInt(spinner.getSelectedItem().toString());
-                    getActivity().startService(new Intent(getActivity(), ServiceAccel.class).putExtra("time", time*1000));
+                    period=Integer.parseInt(editTextTimes.getText().toString());
+                    Intent intent=new Intent(getActivity(), ServiceAccel.class);
+                    intent.putExtra("time", time*1000);
+                    intent.putExtra("period", period*1000);
+                    getActivity().startService(intent);
+
                     Log.d("AccelerometerFragment", "Start: " + sdf.format(System.currentTimeMillis()));
                 } else
                     Toast.makeText(getActivity(), "Служба уже запущенна", Toast.LENGTH_SHORT).show();

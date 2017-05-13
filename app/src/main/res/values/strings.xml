@@ -11,6 +11,7 @@
     <string name="ref">REFRESH</string>
     <string name="per">PERIOD:</string>
     <string name="time">TIMES:</string>
+    <string name="times">seconds</string>
     <string-array name="times_list">
         <item>1</item>
         <item>2</item>

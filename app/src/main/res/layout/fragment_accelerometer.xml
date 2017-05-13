@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.orishkevich.accelerometerapp.fragment.AccelerometerFragment"
-    android:background="@color/blue_light">
+   >
 
     <!-- TODO: Update blank fragment layout -->
 
@@ -11,9 +11,11 @@
         android:id="@+id/my_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/tvText"
-        android:layout_toEndOf="@+id/tvText"
-        android:layout_below="@+id/button_start" />
+
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/times"
+        android:layout_toRightOf="@+id/sendButton"
+        android:layout_toEndOf="@+id/sendButton" />
 
     <Button
         android:id="@+id/button_start"
@@ -22,8 +24,7 @@
         android:background="@color/blue"
         android:text="@string/start"
         android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/tvText"
-        android:layout_toEndOf="@+id/tvText" />
+        />
 
     <Button
         android:id="@+id/button_stop"
@@ -31,7 +32,7 @@
         android:layout_height="wrap_content"
         android:background="@color/blue"
         android:text="@string/stop"
-        android:layout_below="@+id/sendButton"
+        android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
 
@@ -47,43 +48,45 @@
 
     <Spinner
         android:id="@+id/spinner"
+
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@color/blue"
+
         android:entries="@array/times_list"
-        android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/textView2"
-        android:layout_toEndOf="@+id/textView2"
-        android:layout_marginLeft="19dp"
-        android:layout_marginStart="19dp" />
+        android:layout_below="@+id/button_start"
+        android:layout_toRightOf="@+id/per"
+        android:layout_toEndOf="@+id/per" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/per"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/per"
-        android:layout_below="@+id/textView2"
-        android:layout_toRightOf="@+id/button_start"
-        android:layout_toEndOf="@+id/button_start" />
+
+        android:layout_alignBottom="@+id/spinner"
+        android:layout_toRightOf="@+id/sendButton"
+        android:layout_toEndOf="@+id/sendButton"
+        android:layout_alignTop="@+id/spinner" />
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/times_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/spinner"
-        android:layout_toEndOf="@+id/button_start"
-        android:layout_toRightOf="@+id/button_start"
+        android:layout_alignBaseline="@+id/times"
+        android:layout_alignBottom="@+id/times"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:text="@string/time" />
 
-    <Chronometer
-        android:id="@+id/chronometer2"
+    <EditText
+        android:id="@+id/times"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/spinner"
-        android:layout_alignStart="@+id/spinner"
+        android:hint="@string/times"
+        android:textSize="14sp"
         android:layout_below="@+id/spinner"
-        android:layout_alignRight="@+id/spinner"
-        android:layout_alignEnd="@+id/spinner" />
+        android:layout_toRightOf="@+id/per"
+        android:layout_toEndOf="@+id/per" />
 
 
 </RelativeLayout>
