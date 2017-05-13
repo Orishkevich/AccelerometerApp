@@ -60,8 +60,8 @@ public class GraphViewFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         //createdGraphs();
         graphX = (GraphView)getActivity().findViewById(R.id.graph);
-        graphX.removeAllSeries();
-        createdGraphs();
+       // graphX.removeAllSeries();
+       // createdGraphs();
                 btnRefresh = (Button) getActivity().findViewById(R.id.button_refresh);
                 btnRefresh.setOnClickListener(new View.OnClickListener() {
 
