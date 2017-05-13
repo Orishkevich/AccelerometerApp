@@ -96,6 +96,7 @@ public class ServiceAccel extends Service {
                         valuesAccelArrays.add(new Session(valuesAccel[0], valuesAccel[1], valuesAccel[2], System.currentTimeMillis()));
                         showInfo();
                         Log.d(LOG_TAG, "TIME:" + System.currentTimeMillis());
+                        // TODO Здесь можно прописать одну строчку кода для отправки данных сразу на Firebase
                     }
                 });
             }

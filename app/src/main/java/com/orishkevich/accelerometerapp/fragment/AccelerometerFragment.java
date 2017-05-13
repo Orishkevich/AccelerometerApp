@@ -35,7 +35,8 @@ public class AccelerometerFragment extends Fragment {
 
     private Button btnStart;
     private Button btnStop;
-    private static SimpleDateFormat sdf = new SimpleDateFormat("MMM MM dd, yyyy hh:mm:ss:SS a");
+    private static SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy hh:mm:ss a");
+    private static SimpleDateFormat sdfSmall = new SimpleDateFormat("MMM dd, yyyy");
     private ArrayList<Session> valuesAccelArrays = new ArrayList<Session>();
     private ArrayAccelModel arrayAccelModel;
     private RecyclerView rvMain;
@@ -80,6 +81,12 @@ public class AccelerometerFragment extends Fragment {
             public void onReceive(Context context, Intent intent) {
                 Log.d(LOG_TAG, "onReceive:  " + intent.getStringExtra(PARAM_JSON));
                 adapterSet(downSharedPref());
+
+                Toast.makeText(getActivity(), "Данные отправленны", Toast.LENGTH_SHORT).show();
+                mSimpleFirechatDatabaseReference.child("AccelerometeraAPP")
+                        .child(sdfSmall.format(arrayAccelModel.getUserSession().get(0).getMil()))
+                        .child(arrayAccelModel.getUser()).push().setValue(arrayAccelModel);
+
             }
         };
         // создаем фильтр для BroadcastReceiver
@@ -138,10 +145,8 @@ public class AccelerometerFragment extends Fragment {
 
             public void onClick(View view) {
                 bound = false;
-                Log.d("AccelerometerFragment", "End: " + sdf.format(System.currentTimeMillis()));
                 getActivity().stopService(new Intent(getActivity(), ServiceAccel.class));
-                //long start=valuesAccelArrays.get(0).getMil();
-                //long end=valuesAccelArrays.get(valuesAccelArrays.size()-1).getMil();
+
 
             }
 
@@ -153,11 +158,10 @@ public class AccelerometerFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-
-
-
                 Toast.makeText(getActivity(), "Данные отправленны", Toast.LENGTH_SHORT).show();
-                mSimpleFirechatDatabaseReference.child(arrayAccelModel.getUser()).child("Sesion").push().setValue(arrayAccelModel);
+                mSimpleFirechatDatabaseReference.child("AccelerometeraAPP")
+                        .child(sdfSmall.format(arrayAccelModel.getUserSession().get(0).getMil()))
+                        .push().setValue(arrayAccelModel);
             }
         });
     }

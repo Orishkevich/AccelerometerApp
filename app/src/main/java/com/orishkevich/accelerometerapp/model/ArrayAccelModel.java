@@ -1,11 +1,13 @@
 package com.orishkevich.accelerometerapp.model;
 
+import com.google.firebase.database.IgnoreExtraProperties;
+
 import java.util.ArrayList;
 
 /**
  * Created by Инженер-конструктор on 10.05.2017.
  */
-
+@IgnoreExtraProperties
 public class ArrayAccelModel {
 
     private String user;

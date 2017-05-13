@@ -60,11 +60,13 @@ public class GraphViewFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         //createdGraphs();
         graphX = (GraphView)getActivity().findViewById(R.id.graph);
-        graphX.clearSecondScale();
+        graphX.removeAllSeries();
+        createdGraphs();
                 btnRefresh = (Button) getActivity().findViewById(R.id.button_refresh);
-        btnRefresh.setOnClickListener(new View.OnClickListener() {
+                btnRefresh.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View view) {
+                graphX.removeAllSeries();
                 createdGraphs();
                 Toast.makeText(getActivity(), "График обновился", Toast.LENGTH_SHORT).show();
             }
@@ -125,23 +127,23 @@ public DataPoint[] creatGraphX(ArrayList<Session> valuesAccelArray){
         z.setThickness(10);
         z.setColor(Color.RED);
         z.setAnimated(true);
-      //  z.setDrawDataPoints(true);
-      //  z.setDataPointsRadius(15);
+      z.setDrawDataPoints(true);
+      z.setDataPointsRadius(15);
 
         x.setTitle("X");
 
         x.setThickness(10);
         x.setColor(Color.BLUE);
-       // x.setAnimated(true);
-       // x.setDrawDataPoints(true);
-       // x.setDataPointsRadius(15);
+       x.setAnimated(true);
+        x.setDrawDataPoints(true);
+       x.setDataPointsRadius(15);
 
         y.setTitle("Y");
         y.setThickness(10);
         y.setColor(Color.GREEN);
         y.setAnimated(true);
-        //y.setDrawDataPoints(true);
-       // y.setDataPointsRadius(15);
+        y.setDrawDataPoints(true);
+        y.setDataPointsRadius(15);
 
         //graphX.getScaleX();
 
