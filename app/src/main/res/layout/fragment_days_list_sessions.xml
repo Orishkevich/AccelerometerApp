@@ -12,10 +12,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
 
-        android:layout_marginTop="20dp"
-        android:layout_below="@+id/times"
-        android:layout_toRightOf="@+id/sendButton"
-        android:layout_toEndOf="@+id/sendButton" />
+        android:layout_below="@+id/textView"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
     <Button
         android:id="@+id/test"
@@ -24,6 +23,18 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:text="TEST" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:text="@string/hist"
+        android:textAlignment="center"
+        android:textSize="24sp"
+        android:textStyle="bold" />
 
 
 </RelativeLayout>

@@ -65,7 +65,7 @@ public class AccelerometerFragment extends Fragment {
     private GraphViewFragment gF;
     private DatabaseReference mSimpleFirechatDatabaseReference;
     private FragmentTransaction fT;
-    // private FirebaseRecyclerAdapter<FriendlyMessage, MessageViewHolder> mFirebaseAdapter;
+
     public AccelerometerFragment() {
 
     }
@@ -74,13 +74,10 @@ public class AccelerometerFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mSimpleFirechatDatabaseReference = FirebaseDatabase.getInstance().getReference();
-        // DatabaseReference myRef = mSimpleFirechatDatabaseReference.getReference();
-        // myRef.setValue("Hello, World!");
+
         sharedPrefs = this.getActivity().getSharedPreferences(myPrefs, Context.MODE_PRIVATE);
-     /*   if(sharedPrefs.contains(valuesAccelArraysList)) valuesAccelArrays=downSharedPref();
-        else valuesAccelArrays=new ArrayList<>();*/
-        intent = new Intent(getActivity(), ServiceAccel.class);
-        // создаем BroadcastReceiver
+             intent = new Intent(getActivity(), ServiceAccel.class);
+
         br = new BroadcastReceiver() {
             // действия при получении сообщений
             public void onReceive(Context context, Intent intent) {
@@ -94,9 +91,9 @@ public class AccelerometerFragment extends Fragment {
 
             }
         };
-        // создаем фильтр для BroadcastReceiver
+
         IntentFilter intFilt = new IntentFilter(BROADCAST_ACTION);
-        // регистрируем (включаем) BroadcastReceiver
+
         getActivity().registerReceiver(br, intFilt);
 
 
@@ -134,7 +131,8 @@ public class AccelerometerFragment extends Fragment {
         btnStop = (Button) getActivity().findViewById(R.id.button_stop);
         spinner = (Spinner)getActivity().findViewById(R.id.spinner);
         editTextTimes = (EditText)getActivity().findViewById(R.id.times);
-        // adapterSet();//создание списка
+        adapterSet(downSharedPref());//создание списка
+
         btnStart.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View view) {
