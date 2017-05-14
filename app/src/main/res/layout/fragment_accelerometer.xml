@@ -82,11 +82,12 @@
         android:id="@+id/times"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="@string/times"
-        android:textSize="14sp"
         android:layout_below="@+id/spinner"
+        android:layout_toEndOf="@+id/per"
         android:layout_toRightOf="@+id/per"
-        android:layout_toEndOf="@+id/per" />
+        android:hint="@string/times"
+        android:text="0"
+        android:textSize="14sp" />
 
 
 </RelativeLayout>

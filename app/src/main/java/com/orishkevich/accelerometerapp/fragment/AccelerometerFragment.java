@@ -9,6 +9,7 @@ import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -61,9 +62,9 @@ public class AccelerometerFragment extends Fragment {
     private BroadcastReceiver br;
     private EditText editTextTimes;
     private int period;
-
+    private GraphViewFragment gF;
     private DatabaseReference mSimpleFirechatDatabaseReference;
-
+    private FragmentTransaction fT;
     // private FirebaseRecyclerAdapter<FriendlyMessage, MessageViewHolder> mFirebaseAdapter;
     public AccelerometerFragment() {
 
@@ -190,7 +191,11 @@ public class AccelerometerFragment extends Fragment {
         accelAdapter.setOnItemClickListener(new AccelAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View v, int position) {
-
+                gF=new GraphViewFragment();
+                fT = getActivity().getSupportFragmentManager().beginTransaction();
+                fT.replace(R.id.frame, gF, "Graphs");
+                fT.addToBackStack(null);
+                fT.commit();
             }
         });
     }

@@ -6,11 +6,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v4.app.FragmentTransaction;
 
 import com.orishkevich.accelerometerapp.fragment.AccelerometerFragment;
+import com.orishkevich.accelerometerapp.fragment.DaysListSessions;
 
 
 public class Main extends AppCompatActivity {
 
     private AccelerometerFragment aF;
+    private DaysListSessions dF;
     private FragmentTransaction fT;
 
 
@@ -18,9 +20,10 @@ public class Main extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         setTitle("Sessions");
-        aF = new AccelerometerFragment ();
+      //  aF = new AccelerometerFragment ();
+        dF=new DaysListSessions();
         fT = getSupportFragmentManager().beginTransaction();
-        fT.replace(R.id.frame, aF, "Sessions");
+        fT.replace(R.id.frame, dF, "Sessions");
         fT.addToBackStack(null);
         fT.commit();
     }

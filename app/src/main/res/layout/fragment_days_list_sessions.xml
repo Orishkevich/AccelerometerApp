@@ -17,6 +17,13 @@
         android:layout_toRightOf="@+id/sendButton"
         android:layout_toEndOf="@+id/sendButton" />
 
+    <Button
+        android:id="@+id/test"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:text="TEST" />
 
 
 </RelativeLayout>

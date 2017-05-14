@@ -57,10 +57,10 @@ public class GraphViewFragment extends Fragment {
     @Override
     public void onViewCreated(View view,Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        //createdGraphs();
+
         graphX = (GraphView)getActivity().findViewById(R.id.graph);
        // graphX.removeAllSeries();
-       // createdGraphs();
+        createdGraphs();
                 btnRefresh = (Button) getActivity().findViewById(R.id.button_refresh);
                 btnRefresh.setOnClickListener(new View.OnClickListener() {
 

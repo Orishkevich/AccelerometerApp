@@ -7,7 +7,10 @@ import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -22,6 +25,7 @@ import android.widget.Toast;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.gson.Gson;
+import com.orishkevich.accelerometerapp.MainTab;
 import com.orishkevich.accelerometerapp.R;
 import com.orishkevich.accelerometerapp.adapter.AccelAdapter;
 import com.orishkevich.accelerometerapp.adapter.SessionsAdapter;
@@ -39,6 +43,7 @@ import java.util.ArrayList;
 
 public class DaysListSessions extends Fragment {
 
+    private Button btnTest;
 
     private static SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy hh:mm:ss a");
     private static SimpleDateFormat sdfSmall = new SimpleDateFormat("MMM dd, yyyy");
@@ -57,6 +62,9 @@ public class DaysListSessions extends Fragment {
     private  SessionsAdapter sessionAdapter;
 
 
+    private AccelerometerFragment aF;
+
+    private FragmentTransaction fT;
 
 
 
@@ -69,8 +77,11 @@ public class DaysListSessions extends Fragment {
         super.onCreate(savedInstanceState);
 
         sharedPrefs = this.getActivity().getSharedPreferences(myPrefs, Context.MODE_PRIVATE);
-        downSharedPref();
 
+        if (savedInstanceState == null) {
+
+           // downSharedPref();
+        }
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -84,7 +95,22 @@ public class DaysListSessions extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        adapterSet(downSharedPref());
+       // adapterSet(downSharedPref());
+        btnTest = (Button) getActivity().findViewById(R.id.test);
+        btnTest.setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View view) {
+
+                aF=new AccelerometerFragment();
+                fT = getActivity().getSupportFragmentManager().beginTransaction();
+                fT.replace(R.id.frame, aF, "Sessions");
+                fT.addToBackStack(null);
+                fT.commit();
+
+
+            }
+
+        });
     }
 
 
@@ -99,7 +125,11 @@ public class DaysListSessions extends Fragment {
         sessionAdapter.setOnItemClickListener(new SessionsAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View v, int position) {
-
+                aF=new AccelerometerFragment();
+                fT = getActivity().getSupportFragmentManager().beginTransaction();
+                fT.replace(R.id.frame, aF, "Sessions");
+                fT.addToBackStack(null);
+                fT.commit();
             }
         });
     }

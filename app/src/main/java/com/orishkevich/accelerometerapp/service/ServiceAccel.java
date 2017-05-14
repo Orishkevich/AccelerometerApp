@@ -16,9 +16,12 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.orishkevich.accelerometerapp.R;
+import com.orishkevich.accelerometerapp.fragment.DaysListSessions;
 import com.orishkevich.accelerometerapp.model.AccelModel;
 import com.orishkevich.accelerometerapp.model.DaysModel;
 import com.orishkevich.accelerometerapp.model.Session;
@@ -43,6 +46,7 @@ private  int i=0;
     private Session session = new Session();;
     private ArrayList<AccelModel> valuesAccelArrays;
     private static SimpleDateFormat sdf = new SimpleDateFormat("MMM MM dd, yyyy hh:mm:ss: a");
+    private static SimpleDateFormat sdfDay= new SimpleDateFormat("MMM MM dd, yyyy");
     private SharedPreferences sharedPrefs;
     public String myPrefs = "myPrefs";
     public static final String valuesAccelArraysList = "valuesAccelArraysList";
@@ -52,7 +56,7 @@ private  int i=0;
     private int  period;
     private Date date;
     public static final String userName= "userName";
-
+    public static  DaysModel dm=new DaysModel();
     public ServiceAccel() {
     }
 
@@ -89,7 +93,12 @@ private  int i=0;
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         time = intent.getIntExtra("time",1000);
-        period=intent.getIntExtra("period",1000);
+      //  period=intent.getIntExtra("period",1000);
+        if(0==(intent.getIntExtra("period",1000))){
+            period=Integer.MAX_VALUE;
+            Log.d(LOG_TAG, "MAX_VALUE");
+        }
+        else period=intent.getIntExtra("period",1000);
 
         if (sharedPrefs.contains(userName)) {
             session.setUser(sharedPrefs.getString(userName, ""));
@@ -135,7 +144,7 @@ private  int i=0;
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.d("Service", " onDestroy()");
+        Log.d(LOG_TAG, " onDestroy()");
       if (!(i==0))  destroyService();
 
 
@@ -199,6 +208,10 @@ private  int i=0;
         SharedPreferences.Editor editor = sharedPrefs.edit();
         editor.putString(valuesAccelArraysList, arrayAccelModels);
         editor.apply();
+
+        //dm.setDateName(sdfDay.format(System.currentTimeMillis()));
+       // dm.getSessions().add(session);
+       // saveDaySessionsSP(dm) ;
     }
 
     public void saveDaySessionsSP(DaysModel dm) {
@@ -215,12 +228,17 @@ public void destroyService(){
     timer.cancel();
     session.setArray(valuesAccelArrays);
     session.setSession(sdf.format(valuesAccelArrays.get(0).getMil()));
+
+
+
     saveSharedPref(session);
+
     Intent intent = new Intent(BROADCAST_ACTION);
-    Log.d(LOG_TAG, "BROADCAST_ACTION");
+
     intent.putExtra(PARAM_JSON, "Служба остановлена");
     sendBroadcast(intent);
 }
+
 }
 
 
