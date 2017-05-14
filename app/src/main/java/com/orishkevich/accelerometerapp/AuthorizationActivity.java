@@ -36,7 +36,7 @@ public class AuthorizationActivity extends AppCompatActivity implements
 
     private SharedPreferences sharedPrefs;
     public String myPrefs = "myPrefs";
-    public static final String userName= "userName";
+    public static final String userName = "userName";
     private String nameUser;
 
 
@@ -56,7 +56,7 @@ public class AuthorizationActivity extends AppCompatActivity implements
                 .requestEmail()
                 .build();
         mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .enableAutoManage(this , this )
+                .enableAutoManage(this, this)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
 
@@ -85,8 +85,8 @@ public class AuthorizationActivity extends AppCompatActivity implements
             if (result.isSuccess()) {
                 GoogleSignInAccount account = result.getSignInAccount();
 
-                nameUser=account.getDisplayName();
-                 saveSharedPref(nameUser);
+                nameUser = account.getDisplayName();
+                saveSharedPref(nameUser);
                 firebaseAuthWithGoogle(account);
                 account.getDisplayName();
 
@@ -122,8 +122,9 @@ public class AuthorizationActivity extends AppCompatActivity implements
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         Toast.makeText(this, "Google Play Services error.", Toast.LENGTH_SHORT).show();
     }
+
     public void saveSharedPref(String name) {
-        Log.d(LOG_TAG,"Name: "+name);
+        Log.d(LOG_TAG, "Name: " + name);
         SharedPreferences.Editor editor = sharedPrefs.edit();
         editor.putString(userName, name);
         editor.apply();

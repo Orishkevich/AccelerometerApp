@@ -1,16 +1,10 @@
 package com.orishkevich.accelerometerapp.fragment;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -18,27 +12,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Spinner;
-import android.widget.Toast;
 
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.gson.Gson;
-import com.orishkevich.accelerometerapp.MainTab;
 import com.orishkevich.accelerometerapp.R;
-import com.orishkevich.accelerometerapp.adapter.AccelAdapter;
 import com.orishkevich.accelerometerapp.adapter.SessionsAdapter;
-import com.orishkevich.accelerometerapp.model.AccelModel;
 import com.orishkevich.accelerometerapp.model.DaysModel;
-import com.orishkevich.accelerometerapp.model.Session;
-import com.orishkevich.accelerometerapp.service.ServiceAccel;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-
-
-
 
 
 public class DaysListSessions extends Fragment {
@@ -59,13 +39,12 @@ public class DaysListSessions extends Fragment {
     private String sP;
 
     private final String LOG_TAG = "DayList";
-    private  SessionsAdapter sessionAdapter;
+    private SessionsAdapter sessionAdapter;
 
 
     private AccelerometerFragment aF;
 
     private FragmentTransaction fT;
-
 
 
     public DaysListSessions() {
@@ -80,7 +59,7 @@ public class DaysListSessions extends Fragment {
 
         if (savedInstanceState == null) {
 
-           // downSharedPref();
+            // downSharedPref();
         }
     }
 
@@ -95,13 +74,13 @@ public class DaysListSessions extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-       // adapterSet(downSharedPref());
+        // adapterSet(downSharedPref());
         btnTest = (Button) getActivity().findViewById(R.id.test);
         btnTest.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View view) {
 
-                aF=new AccelerometerFragment();
+                aF = new AccelerometerFragment();
                 fT = getActivity().getSupportFragmentManager().beginTransaction();
                 fT.replace(R.id.frame, aF, "Sessions");
                 fT.addToBackStack(null);
@@ -121,11 +100,11 @@ public class DaysListSessions extends Fragment {
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         rvMain.setLayoutManager(layoutManager);
         sessionAdapter = new SessionsAdapter(dayMod);
-        rvMain.setAdapter (sessionAdapter);
+        rvMain.setAdapter(sessionAdapter);
         sessionAdapter.setOnItemClickListener(new SessionsAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View v, int position) {
-                aF=new AccelerometerFragment();
+                aF = new AccelerometerFragment();
                 fT = getActivity().getSupportFragmentManager().beginTransaction();
                 fT.replace(R.id.frame, aF, "Sessions");
                 fT.addToBackStack(null);
@@ -133,7 +112,6 @@ public class DaysListSessions extends Fragment {
             }
         });
     }
-
 
 
     public DaysModel downSharedPref() {
@@ -148,7 +126,7 @@ public class DaysListSessions extends Fragment {
             return session;
         } else {
             Log.d(LOG_TAG, "DOESNT downSharedPref()");
-            return session= new DaysModel();
+            return session = new DaysModel();
         }
 
 

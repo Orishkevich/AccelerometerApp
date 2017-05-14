@@ -1,4 +1,4 @@
-package com.orishkevich.accelerometerapp;
+package com.orishkevich.accelerometerapp.backet;
 
 import android.app.Activity;
 import android.content.res.Configuration;

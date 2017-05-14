@@ -1,7 +1,6 @@
 package com.orishkevich.accelerometerapp.model;
 
 
-
 public class AccelModel {
 
     private float x;
@@ -44,12 +43,9 @@ public class AccelModel {
         return mil;
     }
 
-    public void setMil( long mil) {
+    public void setMil(long mil) {
         this.mil = mil;
     }
-
-
-
 
 
 }

@@ -1,13 +1,8 @@
 package com.orishkevich.accelerometerapp.model;
 
-import com.google.firebase.database.IgnoreExtraProperties;
-
 import java.util.ArrayList;
 
-/**
- * Created by Инженер-конструктор on 10.05.2017.
- */
-@IgnoreExtraProperties
+
 public class Session {
 
     private String user;
@@ -21,11 +16,9 @@ public class Session {
     }
 
 
-
     public Session() {
 
     }
-
 
 
     public String getUser() {
@@ -45,7 +38,6 @@ public class Session {
     }
 
 
-
     public ArrayList<AccelModel> getUserAccelModel() {
         return userAccelModel;
     }
@@ -53,9 +45,6 @@ public class Session {
     public void setArray(ArrayList<AccelModel> userAccelModel) {
         this.userAccelModel = userAccelModel;
     }
-
-
-
 
 
 }

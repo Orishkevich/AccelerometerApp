@@ -2,9 +2,6 @@ package com.orishkevich.accelerometerapp.model;
 
 import java.util.ArrayList;
 
-/**
- * Created by Инженер-конструктор on 14.05.2017.
- */
 
 public class DaysModel {
 
@@ -35,7 +32,6 @@ public class DaysModel {
     public void setDateName(String dateName) {
         this.dateName = dateName;
     }
-
 
 
 }

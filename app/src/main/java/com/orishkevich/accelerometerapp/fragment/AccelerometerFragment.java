@@ -76,7 +76,7 @@ public class AccelerometerFragment extends Fragment {
         mSimpleFirechatDatabaseReference = FirebaseDatabase.getInstance().getReference();
 
         sharedPrefs = this.getActivity().getSharedPreferences(myPrefs, Context.MODE_PRIVATE);
-             intent = new Intent(getActivity(), ServiceAccel.class);
+        intent = new Intent(getActivity(), ServiceAccel.class);
 
         br = new BroadcastReceiver() {
             // действия при получении сообщений
@@ -129,8 +129,8 @@ public class AccelerometerFragment extends Fragment {
 
         btnStart = (Button) getActivity().findViewById(R.id.button_start);
         btnStop = (Button) getActivity().findViewById(R.id.button_stop);
-        spinner = (Spinner)getActivity().findViewById(R.id.spinner);
-        editTextTimes = (EditText)getActivity().findViewById(R.id.times);
+        spinner = (Spinner) getActivity().findViewById(R.id.spinner);
+        editTextTimes = (EditText) getActivity().findViewById(R.id.times);
         adapterSet(downSharedPref());//создание списка
 
         btnStart.setOnClickListener(new View.OnClickListener() {
@@ -139,10 +139,10 @@ public class AccelerometerFragment extends Fragment {
                 if (bound == false) {
                     bound = true;
                     time = Integer.parseInt(spinner.getSelectedItem().toString());
-                    period=Integer.parseInt(editTextTimes.getText().toString());
-                    Intent intent=new Intent(getActivity(), ServiceAccel.class);
-                    intent.putExtra("time", time*1000);
-                    intent.putExtra("period", period*1000);
+                    period = Integer.parseInt(editTextTimes.getText().toString());
+                    Intent intent = new Intent(getActivity(), ServiceAccel.class);
+                    intent.putExtra("time", time * 1000);
+                    intent.putExtra("period", period * 1000);
                     getActivity().startService(intent);
 
                     Log.d("AccelerometerFragment", "Start: " + sdf.format(System.currentTimeMillis()));
@@ -189,7 +189,7 @@ public class AccelerometerFragment extends Fragment {
         accelAdapter.setOnItemClickListener(new AccelAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View v, int position) {
-                gF=new GraphViewFragment();
+                gF = new GraphViewFragment();
                 fT = getActivity().getSupportFragmentManager().beginTransaction();
                 fT.replace(R.id.frame, gF, "Graphs");
                 fT.addToBackStack(null);

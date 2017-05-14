@@ -1,5 +1,5 @@
 package com.orishkevich.accelerometerapp;
-
+/**Активbти под tabs - не используеться*/
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -26,8 +26,8 @@ public class MainTab extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-       // Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-       // setSupportActionBar(toolbar);
+        // Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        // setSupportActionBar(toolbar);
         if (savedInstanceState == null) {
 
             mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
@@ -65,8 +65,6 @@ public class MainTab extends AppCompatActivity {
 */
 
 
-
-
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
         public SectionsPagerAdapter(FragmentManager fm) {
@@ -77,10 +75,10 @@ public class MainTab extends AppCompatActivity {
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    AccelerometerFragment aF=new AccelerometerFragment();
+                    AccelerometerFragment aF = new AccelerometerFragment();
                     return aF;
                 case 1:
-                    GraphViewFragment gF=new GraphViewFragment();
+                    GraphViewFragment gF = new GraphViewFragment();
                     return gF;
                 default:
                     return null;
