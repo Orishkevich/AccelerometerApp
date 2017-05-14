@@ -25,8 +25,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.gson.Gson;
 import com.orishkevich.accelerometerapp.R;
 import com.orishkevich.accelerometerapp.adapter.AccelAdapter;
+import com.orishkevich.accelerometerapp.model.AccelModel;
 import com.orishkevich.accelerometerapp.model.Session;
-import com.orishkevich.accelerometerapp.model.ArrayAccelModel;
 import com.orishkevich.accelerometerapp.service.ServiceAccel;
 
 import java.text.SimpleDateFormat;
@@ -39,8 +39,8 @@ public class AccelerometerFragment extends Fragment {
     private Button btnStop;
     private static SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy hh:mm:ss a");
     private static SimpleDateFormat sdfSmall = new SimpleDateFormat("MMM dd, yyyy");
-    private ArrayList<Session> valuesAccelArrays = new ArrayList<Session>();
-    private ArrayAccelModel arrayAccelModel;
+    private ArrayList<AccelModel> valuesAccelArrays = new ArrayList<AccelModel>();
+    private Session session;
     private RecyclerView rvMain;
     private AccelAdapter accelAdapter;
     private LinearLayoutManager layoutManager;
@@ -88,8 +88,8 @@ public class AccelerometerFragment extends Fragment {
 
                 Toast.makeText(getActivity(), "Данные отправленны", Toast.LENGTH_SHORT).show();
                 mSimpleFirechatDatabaseReference.child("AccelerometeraAPP")
-                        .child(sdfSmall.format(arrayAccelModel.getUserSession().get(0).getMil()))
-                        .child(arrayAccelModel.getUser()).push().setValue(arrayAccelModel);
+                        .child(sdfSmall.format(session.getUserAccelModel().get(0).getMil()))
+                        .child(session.getUser()).push().setValue(session);
 
             }
         };
@@ -171,14 +171,14 @@ public class AccelerometerFragment extends Fragment {
 
                 Toast.makeText(getActivity(), "Данные отправленны", Toast.LENGTH_SHORT).show();
                 mSimpleFirechatDatabaseReference.child("AccelerometeraAPP")
-                        .child(sdfSmall.format(arrayAccelModel.getUserSession().get(0).getMil()))
-                        .push().setValue(arrayAccelModel);
+                        .child(sdfSmall.format(session.getUserAccelModel().get(0).getMil()))
+                        .push().setValue(session);
             }
         });
     }
 
 
-    public void adapterSet(ArrayList<Session> valuesAccelArrays) {
+    public void adapterSet(ArrayList<AccelModel> valuesAccelArrays) {
         //downSharedPref();
         rvMain = (RecyclerView) getActivity().findViewById(R.id.my_recycler_view);
         layoutManager = new LinearLayoutManager(getActivity());
@@ -217,7 +217,7 @@ public class AccelerometerFragment extends Fragment {
         editor.apply();
     }
 
-    public ArrayList<Session> downSharedPref() {
+    public ArrayList<AccelModel> downSharedPref() {
 
         sharedPrefs = getActivity().getSharedPreferences(myPrefs, Context.MODE_PRIVATE);
 
@@ -225,8 +225,8 @@ public class AccelerometerFragment extends Fragment {
 
             sP = sharedPrefs.getString(valuesAccelArraysList, "");
             Log.d(LOG_TAG, "downSharedPref()=" + sP);
-            arrayAccelModel = new Gson().fromJson(sP, ArrayAccelModel.class);
-            return valuesAccelArrays = arrayAccelModel.getUserSession();
+            session = new Gson().fromJson(sP, Session.class);
+            return valuesAccelArrays = session.getUserAccelModel();
         } else {
             Log.d(LOG_TAG, "DOESNT downSharedPref()");
             return valuesAccelArrays = new ArrayList<>();

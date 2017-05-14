@@ -19,8 +19,9 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.orishkevich.accelerometerapp.model.AccelModel;
+import com.orishkevich.accelerometerapp.model.DaysModel;
 import com.orishkevich.accelerometerapp.model.Session;
-import com.orishkevich.accelerometerapp.model.ArrayAccelModel;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -39,12 +40,13 @@ private  int i=0;
     private StringBuilder sb = new StringBuilder();
     private Timer timer;
     private float[] valuesAccel = new float[3];
-    private ArrayAccelModel arrayAccelModel= new ArrayAccelModel();;
-    private ArrayList<Session> valuesAccelArrays;
+    private Session session = new Session();;
+    private ArrayList<AccelModel> valuesAccelArrays;
     private static SimpleDateFormat sdf = new SimpleDateFormat("MMM MM dd, yyyy hh:mm:ss: a");
     private SharedPreferences sharedPrefs;
     public String myPrefs = "myPrefs";
     public static final String valuesAccelArraysList = "valuesAccelArraysList";
+    private static final String daySessionSP = "daySessionSP";
     final String LOG_TAG = "Service";
     private int time;
     private int  period;
@@ -90,15 +92,15 @@ private  int i=0;
         period=intent.getIntExtra("period",1000);
 
         if (sharedPrefs.contains(userName)) {
-            arrayAccelModel.setUser(sharedPrefs.getString(userName, ""));
+            session.setUser(sharedPrefs.getString(userName, ""));
 
         } else {
-            arrayAccelModel.setUser("Anonymous");
+            session.setUser("Anonymous");
                  }
        // time=1000;//задать время
 
         Toast.makeText(this, "Служба запущена", Toast.LENGTH_SHORT).show();
-        valuesAccelArrays=new ArrayList<Session>();
+        valuesAccelArrays=new ArrayList<AccelModel>();
         sensorManager.registerListener(listener, sensorAccel, SensorManager.SENSOR_DELAY_NORMAL);
         timer = new Timer();
       //  date=new Date(System.currentTimeMillis()+period);
@@ -112,7 +114,7 @@ private  int i=0;
                       if(i<(period/time))
 
                       {   Log.d(LOG_TAG, "Iterator:" + i);
-                          valuesAccelArrays.add(new Session(valuesAccel[0], valuesAccel[1], valuesAccel[2], System.currentTimeMillis()));
+                          valuesAccelArrays.add(new AccelModel(valuesAccel[0], valuesAccel[1], valuesAccel[2], System.currentTimeMillis()));
                         showInfo();
                         i++;
                         // TODO Здесь можно прописать одну строчку кода для отправки данных сразу на Firebase
@@ -191,21 +193,29 @@ private  int i=0;
         editor.apply();
     }
 
-    public void saveSharedPref(ArrayAccelModel arrayAccelModel) {
+    public void saveSharedPref(Session session) {
         Log.d("Service", "saveSharedPref()");
-        String arrayAccelModels = new Gson().toJson(arrayAccelModel, ArrayAccelModel.class);
+        String arrayAccelModels = new Gson().toJson(session, Session.class);
         SharedPreferences.Editor editor = sharedPrefs.edit();
         editor.putString(valuesAccelArraysList, arrayAccelModels);
         editor.apply();
     }
+
+    public void saveDaySessionsSP(DaysModel dm) {
+        Log.d("Service", "saveSharedPref()");
+        String dayModels = new Gson().toJson(dm, DaysModel.class);
+        SharedPreferences.Editor editor = sharedPrefs.edit();
+        editor.putString(daySessionSP , dayModels);
+        editor.apply();
+    }
+
 public void destroyService(){
     i=0;
     Toast.makeText(this, "Служба остановлена", Toast.LENGTH_SHORT).show();
     timer.cancel();
-    arrayAccelModel.setArray(valuesAccelArrays);
-    arrayAccelModel.setSession(sdf.format(valuesAccelArrays.get(0).getMil()));
-    saveSharedPref(arrayAccelModel);
-
+    session.setArray(valuesAccelArrays);
+    session.setSession(sdf.format(valuesAccelArrays.get(0).getMil()));
+    saveSharedPref(session);
     Intent intent = new Intent(BROADCAST_ACTION);
     Log.d(LOG_TAG, "BROADCAST_ACTION");
     intent.putExtra(PARAM_JSON, "Служба остановлена");

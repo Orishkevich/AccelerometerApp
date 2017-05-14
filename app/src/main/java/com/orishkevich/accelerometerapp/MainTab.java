@@ -15,7 +15,7 @@ import android.view.MenuItem;
 import com.orishkevich.accelerometerapp.fragment.AccelerometerFragment;
 import com.orishkevich.accelerometerapp.fragment.GraphViewFragment;
 
-public class MainActivity extends AppCompatActivity {
+public class MainTab extends AppCompatActivity {
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
 

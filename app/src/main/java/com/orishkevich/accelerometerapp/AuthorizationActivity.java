@@ -24,8 +24,6 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
-import com.google.gson.Gson;
-import com.orishkevich.accelerometerapp.model.ArrayAccelModel;
 
 public class AuthorizationActivity extends AppCompatActivity implements
         GoogleApiClient.OnConnectionFailedListener, View.OnClickListener {
@@ -86,13 +84,12 @@ public class AuthorizationActivity extends AppCompatActivity implements
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             if (result.isSuccess()) {
                 GoogleSignInAccount account = result.getSignInAccount();
-                Log.d(LOG_TAG,"Name: "+account.getDisplayName());
+
                 nameUser=account.getDisplayName();
                  saveSharedPref(nameUser);
                 firebaseAuthWithGoogle(account);
                 account.getDisplayName();
-                Toast.makeText(AuthorizationActivity.this, "Authentication  successful.",
-                        Toast.LENGTH_SHORT).show();
+
 
             } else {
                 Toast.makeText(AuthorizationActivity.this, "Google Sign In failed.",
@@ -112,8 +109,9 @@ public class AuthorizationActivity extends AppCompatActivity implements
                             Toast.makeText(AuthorizationActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
                         } else {
-
-                            startActivity(new Intent(AuthorizationActivity.this, MainActivity.class));
+                            Toast.makeText(AuthorizationActivity.this, "Authentication  successful.",
+                                    Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(AuthorizationActivity.this, Main.class));
                             finish();
                         }
                     }

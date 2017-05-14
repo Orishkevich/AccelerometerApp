@@ -1,51 +1,57 @@
 package com.orishkevich.accelerometerapp.model;
 
+import com.google.firebase.database.IgnoreExtraProperties;
 
+import java.util.ArrayList;
 
+/**
+ * Created by Инженер-конструктор on 10.05.2017.
+ */
+@IgnoreExtraProperties
 public class Session {
 
-    private float x;
-    private float y;
-    private float z;
-    private long mil;
+    private String user;
+    private String session;
+    private ArrayList<AccelModel> userAccelModel;
 
-    public Session(float x, float y, float z, long mil) {
-        this.x = x;
-        this.y = y;
-        this.z = z;
-        this.mil = mil;
+    public Session(String user, String session, ArrayList<AccelModel> userAccelModel) {
+        this.user = user;
+        this.session = session;
+        this.userAccelModel = userAccelModel;
     }
 
-    public float getX() {
-        return x;
+
+
+    public Session() {
+
     }
 
-    public void setX(float x) {
-        this.x = x;
+
+
+    public String getUser() {
+        return user;
     }
 
-    public float getY() {
-        return y;
+    public void setUser(String user) {
+        this.user = user;
     }
 
-    public void setY(float y) {
-        this.y = y;
+    public String getSession() {
+        return session;
     }
 
-    public float getZ() {
-        return z;
+    public void setSession(String session) {
+        this.session = session;
     }
 
-    public void setZ(float z) {
-        this.z = z;
+
+
+    public ArrayList<AccelModel> getUserAccelModel() {
+        return userAccelModel;
     }
 
-    public long getMil() {
-        return mil;
-    }
-
-    public void setMil( long mil) {
-        this.mil = mil;
+    public void setArray(ArrayList<AccelModel> userAccelModel) {
+        this.userAccelModel = userAccelModel;
     }
 
 
