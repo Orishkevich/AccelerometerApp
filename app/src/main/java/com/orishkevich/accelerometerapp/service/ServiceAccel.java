@@ -32,7 +32,7 @@ import static com.orishkevich.accelerometerapp.fragment.AccelerometerFragment.BR
 
 public class ServiceAccel extends Service {
 
-
+private  int i=0;
     private static final String PARAM_JSON = "JSON";
     private SensorManager sensorManager;
     private Sensor sensorAccel;
@@ -101,24 +101,32 @@ public class ServiceAccel extends Service {
         valuesAccelArrays=new ArrayList<Session>();
         sensorManager.registerListener(listener, sensorAccel, SensorManager.SENSOR_DELAY_NORMAL);
         timer = new Timer();
-        date=new Date(System.currentTimeMillis()+period);
-        timerSet(date);
+      //  date=new Date(System.currentTimeMillis()+period);
+       // timerSet(date);
 
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
                 new Handler(Looper.getMainLooper()).post(new Runnable() {
                     public void run() {
-                        valuesAccelArrays.add(new Session(valuesAccel[0], valuesAccel[1], valuesAccel[2], System.currentTimeMillis()));
+                      if(i<(period/time))
+
+                      {   Log.d(LOG_TAG, "Iterator:" + i);
+                          valuesAccelArrays.add(new Session(valuesAccel[0], valuesAccel[1], valuesAccel[2], System.currentTimeMillis()));
                         showInfo();
-                        Log.d(LOG_TAG, "TIME:" + System.currentTimeMillis());
+                        i++;
                         // TODO Здесь можно прописать одну строчку кода для отправки данных сразу на Firebase
+                      }
+                      else  {
+
+                          destroyService();
+                      }
                     }
                 });
             }
         };
        // timer.schedule(task, 0, time);
-        timer.scheduleAtFixedRate(task, period, time);
+        timer.scheduleAtFixedRate(task, 0, time);
         return START_NOT_STICKY;
     }
 
@@ -126,20 +134,8 @@ public class ServiceAccel extends Service {
     public void onDestroy() {
         super.onDestroy();
         Log.d("Service", " onDestroy()");
-        Toast.makeText(this, "Служба остановлена", Toast.LENGTH_SHORT).show();
-        timer.cancel();
+      if (!(i==0))  destroyService();
 
-
-        arrayAccelModel.setArray(valuesAccelArrays);
-        arrayAccelModel.setSession(sdf.format(valuesAccelArrays.get(0).getMil()));
-        saveSharedPref(arrayAccelModel);
-
-        //
-        Intent intent = new Intent(BROADCAST_ACTION);
-        Log.d(LOG_TAG, "BROADCAST_ACTION");
-        // сообщаем о старте задачи
-        intent.putExtra(PARAM_JSON, "Служба остановлена");
-        sendBroadcast(intent);
 
 
     }
@@ -202,21 +198,18 @@ public class ServiceAccel extends Service {
         editor.putString(valuesAccelArraysList, arrayAccelModels);
         editor.apply();
     }
-public void timerSet(Date date){
-    Log.d(LOG_TAG, " timerSet, date="+date);
-    Timer tim = new Timer();
-    TimerTask t = new TimerTask() {
-        @Override
-        public void run() {
-            new Handler(Looper.getMainLooper()).post(new Runnable() {
-                public void run() {
-                    timer.cancel();
-                }
-            });
-        }
-    };
-    // timer.schedule(task, 0, time);
-        tim.schedule(t, date);
+public void destroyService(){
+    i=0;
+    Toast.makeText(this, "Служба остановлена", Toast.LENGTH_SHORT).show();
+    timer.cancel();
+    arrayAccelModel.setArray(valuesAccelArrays);
+    arrayAccelModel.setSession(sdf.format(valuesAccelArrays.get(0).getMil()));
+    saveSharedPref(arrayAccelModel);
+
+    Intent intent = new Intent(BROADCAST_ACTION);
+    Log.d(LOG_TAG, "BROADCAST_ACTION");
+    intent.putExtra(PARAM_JSON, "Служба остановлена");
+    sendBroadcast(intent);
 }
 }
 
