@@ -83,34 +83,17 @@ public class AccelerometerFragment extends Fragment {
             public void onReceive(Context context, Intent intent) {
                 Log.d(LOG_TAG, "onReceive:  " + intent.getStringExtra(PARAM_JSON));
                 adapterSet(downSharedPref());
-
+                bound = false;
                 Toast.makeText(getActivity(), "Данные отправленны", Toast.LENGTH_SHORT).show();
-                mSimpleFirechatDatabaseReference.child("AccelerometeraAPP")
-                        .child(sdfSmall.format(session.getUserAccelModel().get(0).getMil()))
-                        .child(session.getUser()).push().setValue(session);
+              mSimpleFirechatDatabaseReference.child("Sessions").child(sdfSmall.format(session.getUserAccelModel().get(0).getMil())).child(session.getUser()).push().setValue(session);
+                //mSimpleFirechatDatabaseReference.child((sdfSmall.format(session.getUserAccelModel().get(0).getMil()))).setValue(session);
+
 
             }
         };
 
         IntentFilter intFilt = new IntentFilter(BROADCAST_ACTION);
-
         getActivity().registerReceiver(br, intFilt);
-
-
-        /**  sConn = new ServiceConnection() {
-         public void onServiceConnected(ComponentName name, IBinder binder) {
-         Log.d(LOG_TAG, "onServiceConnected");
-         bound = true;
-
-         }
-
-         public void onServiceDisconnected(ComponentName name) {
-
-         Log.d(LOG_TAG, "onServiceDisconnected");
-         bound = false;
-
-         }
-         };*/
 
 
     }

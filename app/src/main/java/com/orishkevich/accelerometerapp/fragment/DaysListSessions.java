@@ -13,10 +13,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 import com.orishkevich.accelerometerapp.R;
 import com.orishkevich.accelerometerapp.adapter.SessionsAdapter;
+import com.orishkevich.accelerometerapp.model.AccelModel;
 import com.orishkevich.accelerometerapp.model.DaysModel;
+import com.orishkevich.accelerometerapp.model.Session;
 
 import java.text.SimpleDateFormat;
 
@@ -24,15 +32,11 @@ import java.text.SimpleDateFormat;
 public class DaysListSessions extends Fragment {
 
     private Button btnTest;
-
     private static SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy hh:mm:ss a");
     private static SimpleDateFormat sdfSmall = new SimpleDateFormat("MMM dd, yyyy");
-
     private DaysModel session;
     private RecyclerView rvMain;
-
     private LinearLayoutManager layoutManager;
-
     private SharedPreferences sharedPrefs;
     private String myPrefs = "myPrefs";
     private static final String daySessionSP = "daySessionSP";
@@ -61,6 +65,22 @@ public class DaysListSessions extends Fragment {
 
             // downSharedPref();
         }
+
+/**Тут я должен получать данные со сервера Firebase*/
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference ref = database.getReference("AccelerometeraAPP");
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+               // Session ses = dataSnapshot.getValue(Session.class);
+              //  Log.d(LOG_TAG, "onDataChange: " +ses.getSession());
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.d(LOG_TAG, "onCancelled: " + databaseError.getCode());
+            }
+        });
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
