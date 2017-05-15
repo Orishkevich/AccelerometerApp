@@ -77,7 +77,7 @@ public class AccelerometerFragment extends Fragment {
 
         sharedPrefs = this.getActivity().getSharedPreferences(myPrefs, Context.MODE_PRIVATE);
         intent = new Intent(getActivity(), ServiceAccel.class);
-
+/**выполняется при остановке сервиса*/
         br = new BroadcastReceiver() {
             // действия при получении сообщений
             public void onReceive(Context context, Intent intent) {
@@ -85,7 +85,7 @@ public class AccelerometerFragment extends Fragment {
                 adapterSet(downSharedPref());
                 bound = false;
                 Toast.makeText(getActivity(), "Данные отправленны", Toast.LENGTH_SHORT).show();
-              mSimpleFirechatDatabaseReference.child("Sessions").child(sdfSmall.format(session.getUserAccelModel().get(0).getMil())).child(session.getUser()).push().setValue(session);
+                mSimpleFirechatDatabaseReference.child("Sessions").child(sdfSmall.format(session.getUserAccelModel().get(0).getMil())).child(session.getUser()).push().setValue(session);
                 //mSimpleFirechatDatabaseReference.child((sdfSmall.format(session.getUserAccelModel().get(0).getMil()))).setValue(session);
 
 

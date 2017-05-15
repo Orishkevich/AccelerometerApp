@@ -66,7 +66,7 @@ public class DaysListSessions extends Fragment {
             // downSharedPref();
         }
 
-/**Тут я должен получать данные со сервера Firebase*/
+        /**Тут я должен получать данные со сервера Firebase*/
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference("AccelerometeraAPP");
         ref.addValueEventListener(new ValueEventListener() {

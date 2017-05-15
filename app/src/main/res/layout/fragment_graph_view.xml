@@ -7,17 +7,18 @@
     tools:context="com.orishkevich.accelerometerapp.fragment.GraphViewFragment">
 
     <com.jjoe64.graphview.GraphView
-        app:seriesType="line"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
         android:id="@+id/graph"
+        android:layout_width="match_parent"
+        android:layout_height="456dp"
         app:seriesTitle="Accelerometer"
-       />
+        app:seriesType="line" />
+
     <Button
         android:id="@+id/button_refresh"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/ref" />
+        android:layout_height="36dp"
+        android:text="@string/ref"
+        android:visibility="visible" />
 
 
  </LinearLayout >
