@@ -85,7 +85,9 @@ public class AccelerometerFragment extends Fragment {
                 adapterSet(downSharedPref());
                 bound = false;
                 Toast.makeText(getActivity(), "Данные отправленны", Toast.LENGTH_SHORT).show();
-                mSimpleFirechatDatabaseReference.child("Sessions").child(sdfSmall.format(session.getUserAccelModel().get(0).getMil())).child(session.getUser()).push().setValue(session);
+                mSimpleFirechatDatabaseReference.child("Sessions")
+                     //   .child(sdfSmall.format(session.getUserAccelModel().get(0).getMil()))
+                        .child(session.getUser()).push().setValue(session);
                 //mSimpleFirechatDatabaseReference.child((sdfSmall.format(session.getUserAccelModel().get(0).getMil()))).setValue(session);
 
 
@@ -93,6 +95,7 @@ public class AccelerometerFragment extends Fragment {
         };
 
         IntentFilter intFilt = new IntentFilter(BROADCAST_ACTION);
+
         getActivity().registerReceiver(br, intFilt);
 
 

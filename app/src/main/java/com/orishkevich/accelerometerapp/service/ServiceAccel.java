@@ -135,7 +135,8 @@ public class ServiceAccel extends Service {
         };
         // timer.schedule(task, 0, time);
         timer.scheduleAtFixedRate(task, 0, time);
-        return START_NOT_STICKY;
+       // return START_NOT_STICKY;
+        return super.onStartCommand(intent, flags, startId);
     }
 
     @Override
@@ -229,7 +230,7 @@ public class ServiceAccel extends Service {
         saveSharedPref(session);
 
         Intent intent = new Intent(BROADCAST_ACTION);
-
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra(PARAM_JSON, "Служба остановлена");
         sendBroadcast(intent);
     }
